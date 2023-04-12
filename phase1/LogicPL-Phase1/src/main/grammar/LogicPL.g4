@@ -42,7 +42,13 @@ multDivModOperand
     : '+' multDivModOperand
     | '-' multDivModOperand
     | '!' multDivModOperand
-    | commonOperand;
+    | arrayAccessOperand
+    ;
+
+arrayAccessOperand
+    : VAR_NAME '[' ARR_IDX ']'
+    | commonOperand
+    ;
 
 commonOperand
     : '(' expr ')'
@@ -95,7 +101,7 @@ KEYWORD_RETURN
 
 //Data type values
 INT_VAL
-    : [0-9]+
+    : '-'?[0-9]+
     ;
 
 FLOAT_VAL
@@ -105,6 +111,10 @@ FLOAT_VAL
 BOOLEAN_VAL
     : KEYWORD_TRUE
     | KEYWORD_FALSE
+    ;
+
+ARR_IDX
+    : [0-9]+
     ;
 
 //Name patterns
