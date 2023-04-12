@@ -1,5 +1,56 @@
 grammar LogicPL;
 
+//Operators
+expr
+    : expr '||' logicalOrOperand
+    | logicalOrOperand
+    ;
+
+logicalOrOperand
+    : logicalOrOperand '&&' logicalAndOperand
+    | logicalAndOperand
+    ;
+
+logicalAndOperand
+    : logicalAndOperand '==' eqNotEqOperand
+    | logicalAndOperand '!=' eqNotEqOperand
+    | eqNotEqOperand
+    ;
+
+eqNotEqOperand
+    : eqNotEqOperand '<' relOperand
+    | eqNotEqOperand '>' relOperand
+    | eqNotEqOperand '<=' relOperand
+    | eqNotEqOperand '>=' relOperand
+    relOperand
+    ;
+
+relOperand
+    : relOperand '+' addSubOperand
+    | relOperand '-' addSubOperand
+    | addSubOperand
+    ;
+
+addSubOperand
+    : addSubOperand '*' multDivModOperand
+    | addSubOperand '/' multDivModOperand
+    | addSubOperand '%' multDivModOperand
+    | multDivModOperand
+    ;
+
+multDivModOperand
+    : '+' multDivModOperand
+    | '-' multDivModOperand
+    | '!' multDivModOperand
+    | commonOperand;
+
+commonOperand
+    : '(' expr ')'
+    | VAR_NAME
+    | INT_VAL
+    | FLOAT_VAL
+    | BOOLEAN_VAL
+    ;
 
 //Reserved names
 INT
