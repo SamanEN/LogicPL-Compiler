@@ -2,7 +2,7 @@ grammar LogicPL;
 
 //Main structure
 logicpl
-    : main EOF
+    : main EOF {System.out.println("MainBody");}
     | function logicpl;
 
 main
@@ -16,17 +16,17 @@ multiStatement
     ;
 
 statement
-    : varInit END_OF_STATEMENT
-    | varDec  END_OF_STATEMENT
-    | arrDec END_OF_STATEMENT
-    | arrInit END_OF_STATEMENT
-    | print END_OF_STATEMENT
+    : {System.out.println("VarDec: ");} varInit END_OF_STATEMENT
+    | {System.out.println("VarDec: ");} varDec END_OF_STATEMENT
+    | {System.out.println("VarDec: ");} arrDec END_OF_STATEMENT
+    | {System.out.println("VarDec: ");} arrInit END_OF_STATEMENT
+    | {System.out.println("Built-in: print");} print END_OF_STATEMENT
     | predicateInvocation END_OF_STATEMENT
-    | implication
+    | {System.out.println("Implication");} implication
     | forLoop
     | assignment END_OF_STATEMENT
     | returnStatement END_OF_STATEMENT
-    | functionInvocation END_OF_STATEMENT
+    | functionInvocation{System.out.println("FunctionCall");} END_OF_STATEMENT
     ;
 
 assignment
@@ -35,24 +35,24 @@ assignment
     ;
 
 returnStatement
-    : KEYWORD_RETURN expr
+    : KEYWORD_RETURN{System.out.println("Return")} expr
     ;
 
 //Variable related rules
 varInit
-    : (INT | FLOAT | BOOLEAN) VAR_NAME EQ expr
+    : (INT | FLOAT | BOOLEAN) VAR_NAME{System.out.print($VAR_NAME.getText());} EQ expr
     ;
 
 varDec
-    : (INT | FLOAT | BOOLEAN) VAR_NAME
+    : (INT | FLOAT | BOOLEAN) VAR_NAME{System.out.print($VAR_NAME.getText());}
     ;
 
 arrDec
-    : (INT | FLOAT | BOOLEAN) L_BRACKET ARR_IDX R_BRACKET VAR_NAME
+    : (INT | FLOAT | BOOLEAN) L_BRACKET ARR_IDX R_BRACKET VAR_NAME{System.out.print($VAR_NAME.getText());}
     ;
 
 arrInit
-    : (INT | FLOAT | BOOLEAN) L_BRACKET ARR_IDX R_BRACKET VAR_NAME EQ L_BRACKET (arrValue)? R_BRACKET
+    : (INT | FLOAT | BOOLEAN) L_BRACKET ARR_IDX R_BRACKET VAR_NAME{System.out.print($VAR_NAME.getText());} EQ L_BRACKET (arrValue)? R_BRACKET
     ;
 
 arrValue
@@ -64,7 +64,7 @@ print
     ;
 
 predicateInvocation
-    : PREDICATE_NAME L_PAR VAR_NAME R_PAR
+    : PREDICATE_NAME{System.out.println("Predicate: " + $PREDICATE_NAME.getText());} L_PAR VAR_NAME R_PAR
     ;
 
 //Implication
@@ -93,14 +93,14 @@ queryListType
 
 //Loop
 forLoop
-    : KEYWORD_FOR L_PAR VAR_NAME ':' VAR_NAME R_PAR L_BRACE R_BRACE
-    | KEYWORD_FOR L_PAR VAR_NAME ':' VAR_NAME R_PAR L_BRACE multiStatement R_BRACE
+    : KEYWORD_FOR{System.out.println("Loop: for");} L_PAR VAR_NAME ':' VAR_NAME R_PAR L_BRACE R_BRACE
+    | KEYWORD_FOR{System.out.println("Loop: for");} L_PAR VAR_NAME ':' VAR_NAME R_PAR L_BRACE multiStatement R_BRACE
     ;
 
 //Function
 function
-    : KEYWORD_FUNCTION FUNC_NAME L_PAR functionArgsList R_PAR ':' (INT | FLOAT | BOOLEAN) L_BRACE multiStatement R_BRACE
-    | KEYWORD_FUNCTION FUNC_NAME L_PAR R_PAR ':' (INT | FLOAT | BOOLEAN) L_BRACE multiStatement R_BRACE
+    : KEYWORD_FUNCTION{System.out.println("FunctionDec: ");} FUNC_NAME{System.out.print($FUNC_NAME.getText());} L_PAR functionArgsList{System.out.println("ArgumentDec: ");} R_PAR ':' (INT | FLOAT | BOOLEAN) L_BRACE multiStatement R_BRACE
+    | KEYWORD_FUNCTION{System.out.println("FunctionDec: ");} FUNC_NAME{System.out.print($FUNC_NAME.getText());} L_PAR R_PAR ':' (INT | FLOAT | BOOLEAN) L_BRACE multiStatement R_BRACE
     ;
 
 functionArgsList
@@ -124,46 +124,46 @@ arrIndexing
     ;
 
 expr
-    : expr '||' logicalOrOperand
+    : expr '||' logicalOrOperand {System.out.println("Operator: ||");}
     | logicalOrOperand
     ;
 
 logicalOrOperand
-    : logicalOrOperand '&&' logicalAndOperand
+    : logicalOrOperand '&&' logicalAndOperand {System.out.println("Operator: &&");}
     | logicalAndOperand
     ;
 
 logicalAndOperand
-    : logicalAndOperand '==' eqNotEqOperand
-    | logicalAndOperand '!=' eqNotEqOperand
+    : logicalAndOperand '==' eqNotEqOperand {System.out.println("Operator: ==");}
+    | logicalAndOperand '!=' eqNotEqOperand {System.out.println("Operator: !=");}
     | eqNotEqOperand
     ;
 
 eqNotEqOperand
-    : eqNotEqOperand '<' relOperand
-    | eqNotEqOperand '>' relOperand
-    | eqNotEqOperand '<=' relOperand
-    | eqNotEqOperand '>=' relOperand
+    : eqNotEqOperand '<' relOperand {System.out.println("Operator: <");}
+    | eqNotEqOperand '>' relOperand {System.out.println("Operator: >");}
+    | eqNotEqOperand '<=' relOperand {System.out.println("Operator: <=");}
+    | eqNotEqOperand '>=' relOperand {System.out.println("Operator: >=");}
     | relOperand
     ;
 
 relOperand
-    : relOperand '+' addSubOperand
-    | relOperand '-' addSubOperand
+    : relOperand '+' addSubOperand {System.out.println("Operator: +");}
+    | relOperand '-' addSubOperand {System.out.println("Operator: -");}
     | addSubOperand
     ;
 
 addSubOperand
-    : addSubOperand '*' multDivModOperand
-    | addSubOperand '/' multDivModOperand
-    | addSubOperand '%' multDivModOperand
+    : addSubOperand '*' multDivModOperand {System.out.println("Operator: *");}
+    | addSubOperand '/' multDivModOperand {System.out.println("Operator: /");}
+    | addSubOperand '%' multDivModOperand {System.out.println("Operator: %");}
     | multDivModOperand
     ;
 
 multDivModOperand
-    : '+' multDivModOperand
-    | '-' multDivModOperand
-    | '!' multDivModOperand
+    : '+' multDivModOperand {System.out.println("Operator: +");}
+    | '-' multDivModOperand {System.out.println("Operator: -");}
+    | '!' multDivModOperand {System.out.println("Operator: !");}
     | arrayAccessOperand
     ;
 
