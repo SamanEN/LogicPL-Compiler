@@ -2,7 +2,7 @@ grammar LogicPL;
 
 //Main structure
 logicpl
-    : main EOF {System.out.println("MainBody");}
+    : {System.out.println("MainBody");} main EOF
     | function logicpl;
 
 main
@@ -16,55 +16,55 @@ multiStatement
     ;
 
 statement
-    : {System.out.println("VarDec: ");} varInit END_OF_STATEMENT
-    | {System.out.println("VarDec: ");} varDec END_OF_STATEMENT
-    | {System.out.println("VarDec: ");} arrDec END_OF_STATEMENT
-    | {System.out.println("VarDec: ");} arrInit END_OF_STATEMENT
+    : {System.out.print("VarDec: ");} varInit END_OF_STATEMENT
+    | {System.out.print("VarDec: ");} varDec END_OF_STATEMENT
+    | {System.out.print("VarDec: ");} arrDec END_OF_STATEMENT
+    | {System.out.print("VarDec: ");} arrInit END_OF_STATEMENT
     | {System.out.println("Built-in: print");} print END_OF_STATEMENT
     | predicateInvocation END_OF_STATEMENT
     | {System.out.println("Implication");} implication
     | forLoop
     | assignment END_OF_STATEMENT
     | returnStatement END_OF_STATEMENT
-    | functionInvocation{System.out.println("FunctionCall");} END_OF_STATEMENT
+    | {System.out.println("FunctionCall");} functionInvocation END_OF_STATEMENT
     ;
 
 assignment
-    : VAR_NAME EQ expr
+    : VAR_FUNC_NAME EQ expr
     | arrIndexing EQ expr
     ;
 
 returnStatement
-    : KEYWORD_RETURN{System.out.println("Return")} expr
+    : KEYWORD_RETURN{System.out.println("Return");} expr
     ;
 
 //Variable related rules
 varInit
-    : (INT | FLOAT | BOOLEAN) VAR_NAME{System.out.print($VAR_NAME.getText());} EQ expr
+    : (INT | FLOAT | BOOLEAN) VAR_FUNC_NAME{System.out.println($VAR_FUNC_NAME.getText());} EQ expr
     ;
 
 varDec
-    : (INT | FLOAT | BOOLEAN) VAR_NAME{System.out.print($VAR_NAME.getText());}
+    : (INT | FLOAT | BOOLEAN) VAR_FUNC_NAME {System.out.println($VAR_FUNC_NAME.text);}
     ;
 
 arrDec
-    : (INT | FLOAT | BOOLEAN) L_BRACKET ARR_IDX R_BRACKET VAR_NAME{System.out.print($VAR_NAME.getText());}
+    : (INT | FLOAT | BOOLEAN) L_BRACKET INT_VAL R_BRACKET VAR_FUNC_NAME{System.out.println($VAR_FUNC_NAME.getText());}
     ;
 
 arrInit
-    : (INT | FLOAT | BOOLEAN) L_BRACKET ARR_IDX R_BRACKET VAR_NAME{System.out.print($VAR_NAME.getText());} EQ L_BRACKET (arrValue)? R_BRACKET
+    : (INT | FLOAT | BOOLEAN) L_BRACKET INT_VAL R_BRACKET VAR_FUNC_NAME{System.out.println($VAR_FUNC_NAME.getText());} EQ L_BRACKET (arrValue)? R_BRACKET
     ;
 
 arrValue
-    : (INT_VAL | FLOAT_VAL | BOOLEAN_VAL) | (INT_VAL | FLOAT_VAL | BOOLEAN_VAL) COMMA arrValue
+    : ((('-')* INT_VAL) | (('-')*FLOAT_VAL) | BOOLEAN_VAL) | ((('-')* INT_VAL) | (('-')*FLOAT_VAL) | BOOLEAN_VAL) COMMA arrValue
     ;
 
 print
-    : KEYWORD_PRINT L_PAR (VAR_NAME | query) R_PAR
+    : KEYWORD_PRINT L_PAR (VAR_FUNC_NAME | query) R_PAR
     ;
 
 predicateInvocation
-    : PREDICATE_NAME{System.out.println("Predicate: " + $PREDICATE_NAME.getText());} L_PAR VAR_NAME R_PAR
+    : PREDICATE_NAME{System.out.println("Predicate: " + $PREDICATE_NAME.getText());} L_PAR VAR_FUNC_NAME R_PAR
     ;
 
 //Implication
@@ -73,7 +73,7 @@ implication
     ;
 
 implicationExpr
-    : statement ';' (implicationExpr)?
+    : statement (implicationExpr)?
     ;
 
 
@@ -93,34 +93,38 @@ queryListType
 
 //Loop
 forLoop
-    : KEYWORD_FOR{System.out.println("Loop: for");} L_PAR VAR_NAME ':' VAR_NAME R_PAR L_BRACE R_BRACE
-    | KEYWORD_FOR{System.out.println("Loop: for");} L_PAR VAR_NAME ':' VAR_NAME R_PAR L_BRACE multiStatement R_BRACE
+    : KEYWORD_FOR{System.out.println("Loop: for");} L_PAR VAR_FUNC_NAME ':' VAR_FUNC_NAME R_PAR L_BRACE R_BRACE
+    | KEYWORD_FOR{System.out.println("Loop: for");} L_PAR VAR_FUNC_NAME ':' VAR_FUNC_NAME R_PAR L_BRACE multiStatement R_BRACE
     ;
 
 //Function
 function
-    : KEYWORD_FUNCTION{System.out.println("FunctionDec: ");} FUNC_NAME{System.out.print($FUNC_NAME.getText());} L_PAR functionArgsList{System.out.println("ArgumentDec: ");} R_PAR ':' (INT | FLOAT | BOOLEAN) L_BRACE multiStatement R_BRACE
-    | KEYWORD_FUNCTION{System.out.println("FunctionDec: ");} FUNC_NAME{System.out.print($FUNC_NAME.getText());} L_PAR R_PAR ':' (INT | FLOAT | BOOLEAN) L_BRACE multiStatement R_BRACE
+    : KEYWORD_FUNCTION{System.out.print("FunctionDec: ");} VAR_FUNC_NAME{System.out.println($VAR_FUNC_NAME.text);} L_PAR {System.out.print("ArgumentDec: ");}functionArgsList R_PAR ':' (INT | FLOAT | BOOLEAN) L_BRACE multiStatement R_BRACE
+    | KEYWORD_FUNCTION{System.out.println("FunctionDec: ");} VAR_FUNC_NAME{System.out.print($VAR_FUNC_NAME.getText());} L_PAR R_PAR ':' (INT | FLOAT | BOOLEAN) L_BRACE multiStatement R_BRACE
     ;
 
 functionArgsList
     : varDec
-    | varDec COMMA functionArgsList
+    | varDec COMMA {System.out.print("ArgumentDec: ");}functionArgsList
     ;
 
 functionInvocation
-    : FUNC_NAME L_PAR functionInvocationArgsList R_PAR
-    | FUNC_NAME L_PAR R_PAR
+    : VAR_FUNC_NAME L_PAR R_PAR
+    | VAR_FUNC_NAME L_PAR functionInvocationArgsList R_PAR
     ;
 
 functionInvocationArgsList
-    : VAR_NAME
-    | VAR_NAME COMMA functionInvocationArgsList
+    : VAR_FUNC_NAME
+    | VAR_FUNC_NAME COMMA functionInvocationArgsList
+    | ( (('-' | '+')* INT_VAL) | (('-' | '+')* FLOAT_VAL) | BOOLEAN_VAL )
+    | ( (('-' | '+')* INT_VAL) | (('-' | '+')* FLOAT_VAL) | BOOLEAN_VAL ) COMMA functionInvocationArgsList
+    | (expr)
+    | (expr) COMMA functionInvocationArgsList
     ;
 
 //Variable referencing
 arrIndexing
-    : VAR_NAME L_BRACKET expr R_BRACKET
+    : VAR_FUNC_NAME L_BRACKET expr R_BRACKET
     ;
 
 expr
@@ -168,16 +172,16 @@ multDivModOperand
     ;
 
 arrayAccessOperand
-    : VAR_NAME '[' ARR_IDX ']'
+    : VAR_FUNC_NAME '[' INT_VAL ']'
     | commonOperand
     ;
 
 commonOperand
     : '(' expr ')'
-    | VAR_NAME
+    | VAR_FUNC_NAME
     | arrIndexing
-    | INT_VAL
-    | FLOAT_VAL
+    | (('-')* INT_VAL)
+    | (('-')*FLOAT_VAL)
     | BOOLEAN_VAL
     | functionInvocation
     ;
@@ -263,7 +267,7 @@ END_OF_STATEMENT
 
 //Data type values
 INT_VAL
-    : '-'?[0-9]+
+    : [0-9]+
     ;
 
 FLOAT_VAL
@@ -275,18 +279,15 @@ BOOLEAN_VAL
     | KEYWORD_FALSE
     ;
 
-ARR_IDX
-    : [0-9]+
-    ;
 
 //Name patterns
-FUNC_NAME
+VAR_FUNC_NAME
     : [a-z] ('_' | [a-zA-Z0-9])*
     ;
 
-VAR_NAME
-    : [a-z] ('_' | [a-zA-Z0-9])*
-    ;
+//VAR_FUNC_NAME
+//    : [a-z]+ ('_' | [a-zA-Z0-9])*
+//    ;
 
 PREDICATE_NAME
     : [A-Z] ('_' | [a-zA-Z0-9])*

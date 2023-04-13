@@ -1,0 +1,17 @@
+function func1(int z, int g):boolean{
+    int w;
+    return x;
+}
+# comment
+main{
+    int [10]a;
+    a[1] = 10;
+    x = 5;
+    func1(10, 7);
+    (a>b) => (Devisible(x);)
+
+    int x = a / b + c * d;
+    (a/2 <= b%2) => (x=4*-x;)
+    func1(func2(a*3));
+    boolean w = a+5*4 <= f%2 || b*-7 > 8;
+}
