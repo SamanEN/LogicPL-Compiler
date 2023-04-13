@@ -1,6 +1,44 @@
 grammar LogicPL;
 
-//Grammars
+//Main structure
+logicpl
+    : main EOF
+    | function logicpl;
+
+main
+    : KEYWORD_MAIN L_BRACE multiStatement R_BRACE
+    ;
+
+//Statements
+multiStatement
+    : statement
+    | statement multiStatement
+    ;
+
+statement
+    : varInit END_OF_STATEMENT
+    | varDec  END_OF_STATEMENT
+    | arrDec END_OF_STATEMENT
+    | arrInit END_OF_STATEMENT
+    | print END_OF_STATEMENT
+    | predicateInvocation END_OF_STATEMENT
+    | implication
+    | forLoop
+    | assignment END_OF_STATEMENT
+    | returnStatement END_OF_STATEMENT
+    | functionInvocation END_OF_STATEMENT
+    ;
+
+assignment
+    : VAR_NAME EQ expr
+    | arrIndexing EQ expr
+    ;
+
+returnStatement
+    : KEYWORD_RETURN expr
+    ;
+
+//Variable related rules
 varInit
     : (INT | FLOAT | BOOLEAN) VAR_NAME EQ expr
     ;
@@ -25,26 +63,27 @@ print
     : KEYWORD_PRINT L_PAR (VAR_NAME | query) R_PAR
     ;
 
-predicateInvoke
+predicateInvocation
     : PREDICATE_NAME L_PAR VAR_NAME R_PAR
     ;
 
-implicationInvoke // bejaye implicationExpr shayad expr bashe va bejaye expr shayad booleanExpr bashe
+//Implication
+implication
     : L_PAR expr R_PAR '=>' L_PAR implicationExpr R_PAR
     ;
 
 implicationExpr
-    : expr ';' (implicationExpr)?
+    : statement ';' (implicationExpr)?
     ;
 
 
-//QUERY
+//Query
 query
     : L_BRACKET (queryBoolType | queryListType) R_BRACKET
     ;
 
 queryBoolType
-    : '?' predicateInvoke
+    : '?' predicateInvocation
     ;
 
 queryListType
@@ -52,36 +91,38 @@ queryListType
     ;
 
 
-//LOOP
+//Loop
 forLoop
-    : KEYWORD_FOR L_PAR VAR_NAME ':' VAR_NAME R_PAR L_BRACE line /*ya harchize dige (ghate code) */ R_BRACE
+    : KEYWORD_FOR L_PAR VAR_NAME ':' VAR_NAME R_PAR L_BRACE R_BRACE
+    | KEYWORD_FOR L_PAR VAR_NAME ':' VAR_NAME R_PAR L_BRACE multiStatement R_BRACE
     ;
 
-//FUNCTION
-function // nemidonam baraye return bayad chetori check beshe
-    : KEYWORD_FUNCTION FUNC_NAME L_PAR (varDec)? R_PAR ':' (INT | FLOAT | BOOLEAN) L_BRACE line R_BRACE
+//Function
+function
+    : KEYWORD_FUNCTION FUNC_NAME L_PAR functionArgsList R_PAR ':' (INT | FLOAT | BOOLEAN) L_BRACE multiStatement R_BRACE
+    | KEYWORD_FUNCTION FUNC_NAME L_PAR R_PAR ':' (INT | FLOAT | BOOLEAN) L_BRACE multiStatement R_BRACE
     ;
 
-//Variable Usage
-arrIndexing // bejaye intExpr shayad expr bashe
-    : VAR_NAME L_BRACKET intExpr R_BRACKET
+functionArgsList
+    : varDec
+    | varDec COMMA functionArgsList
     ;
 
-
-//int expr
-intExpr // expression that it's result has an int value and not boolean or float
-    : INT_VAL
-    | VAR_NAME //commonOperand
-    | '(' intExpr ')' //commonOperand
-    | intExpr '+' intExpr //addSubOperand
-    | intExpr '-' intExpr //addSubOperand
-    | intExpr '*' intExpr //multDivModOperand
-    | intExpr '/' intExpr //multDivModOperand
-    | intExpr '%' intExpr //multDivModOperand
+functionInvocation
+    : FUNC_NAME L_PAR functionInvocationArgsList R_PAR
+    | FUNC_NAME L_PAR R_PAR
     ;
 
+functionInvocationArgsList
+    : VAR_NAME
+    | VAR_NAME COMMA functionInvocationArgsList
+    ;
 
-//Operators
+//Variable referencing
+arrIndexing
+    : VAR_NAME L_BRACKET expr R_BRACKET
+    ;
+
 expr
     : expr '||' logicalOrOperand
     | logicalOrOperand
@@ -103,7 +144,7 @@ eqNotEqOperand
     | eqNotEqOperand '>' relOperand
     | eqNotEqOperand '<=' relOperand
     | eqNotEqOperand '>=' relOperand
-    relOperand
+    | relOperand
     ;
 
 relOperand
@@ -134,9 +175,11 @@ arrayAccessOperand
 commonOperand
     : '(' expr ')'
     | VAR_NAME
+    | arrIndexing
     | INT_VAL
     | FLOAT_VAL
     | BOOLEAN_VAL
+    | functionInvocation
     ;
 
 //Reserved names
@@ -214,6 +257,9 @@ COMMA
     : ','
     ;
 
+END_OF_STATEMENT
+    : ';'
+    ;
 
 //Data type values
 INT_VAL
