@@ -1,17 +1,26 @@
-function func1(int z, int g):boolean{
-    int w;
-    return x;
+# definition of functions
+function isDivisible(int a, int b): boolean {
+    (b == 0) => (return false;)
+    (a % b == 0) => (return true;)
+    (a % b != 0) => (return false;)
 }
-# comment
-main{
-    int [10]a;
-    a[1] = 10;
-    x = 5;
-    func1(10, 7);
-    (a>b) => (Devisible(x);)
 
-    int x = a / b + c * d;
-    (a/2 <= b%2) => (x=4*-x;)
-    func1(func2(a*3));
-    boolean w = a+5*4 <= f%2 || b*-7 > 8;
+main{
+    int num1 = 50;
+    EvenNumber(num1);
+    
+    ([?EvenNumber(num1)] && isDivisible(num1, 5)) => (DivisibleBy10(num1);)
+
+    int[2] int_array = [4, 5];
+    int num2 = 200;
+    boolean divisible = true;
+    for (a: int_array){
+        (!isDivisible(num2, a)) => (divisible = false; return;)
+    }
+    (divisible == true) => (DivisibleBy20(num2);)
+
+    ([?DivisibleBy20(num2)]) => (EvenNumber(num2);DivisibleBy10(num2);)
+    print([?EvenNumber(num2)]); # prints "true"
+    print([DivisibleBy10(?)]); # prints "{num1, num2}"
+    num1 = a*b + c*d - e/f;
 }

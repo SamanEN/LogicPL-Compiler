@@ -21,12 +21,12 @@ statement
     | {System.out.print("VarDec: ");} arrDec END_OF_STATEMENT
     | {System.out.print("VarDec: ");} arrInit END_OF_STATEMENT
     | {System.out.println("Built-in: print");} print END_OF_STATEMENT
-    | {System.out.println("FunctionCall");} functionInvocation END_OF_STATEMENT
     | predicateInvocation END_OF_STATEMENT
-    | returnStatement END_OF_STATEMENT
     | {System.out.println("Implication");} implication
     | forLoop
     | assignment END_OF_STATEMENT
+    | returnStatement END_OF_STATEMENT
+    | {System.out.println("FunctionCall");} functionInvocation END_OF_STATEMENT
     ;
 
 assignment
@@ -35,8 +35,7 @@ assignment
     ;
 
 returnStatement
-    : KEYWORD_RETURN {System.out.println("Return");} (INT_VAL|FLOAT_VAL|BOOLEAN_VAL|VAR_FUNC_NAME)
-    | KEYWORD_RETURN {System.out.println("Return");}
+    : KEYWORD_RETURN{System.out.println("Return");} (INT_VAL|FLOAT_VAL|BOOLEAN_VAL|VAR_FUNC_NAME)
     ;
 
 //Variable related rules
@@ -62,14 +61,11 @@ arrValue
     ;
 
 print
-    : KEYWORD_PRINT L_PAR VAR_FUNC_NAME R_PAR
-    | KEYWORD_PRINT L_PAR queryListType R_PAR
-    | KEYWORD_PRINT L_PAR queryBoolType R_PAR
+    : KEYWORD_PRINT L_PAR (VAR_FUNC_NAME | query) R_PAR
     ;
 
 predicateInvocation
-    : PREDICATE_NAME {System.out.println("Predicate: " + $PREDICATE_NAME.getText());} L_PAR VAR_FUNC_NAME R_PAR
-    | PREDICATE_NAME {System.out.println("Predicate: " + $PREDICATE_NAME.getText());} L_PAR arrIndexing R_PAR
+    : PREDICATE_NAME{System.out.println("Predicate: " + $PREDICATE_NAME.getText());} L_PAR VAR_FUNC_NAME R_PAR
     ;
 
 //Implication
@@ -82,12 +78,16 @@ implicationExpr
     ;
 
 //Query
+query
+    : L_BRACKET (queryBoolType | queryListType) R_BRACKET
+    ;
+
 queryBoolType
-    : L_BRACKET '?' predicateInvocation R_BRACKET
+    : '?' predicateInvocation
     ;
 
 queryListType
-    : L_BRACKET PREDICATE_NAME {System.out.println("Predicate: " + $PREDICATE_NAME.getText());} L_PAR '?' R_PAR R_BRACKET
+    : PREDICATE_NAME L_PAR '?' R_PAR
     ;
 
 
@@ -178,20 +178,18 @@ multDivModOperand
     ;
 
 arrayAccessOperand
-    : VAR_FUNC_NAME L_BRACKET expr R_BRACKET
+    : VAR_FUNC_NAME '[' expr ']'
     | commonOperand
     ;
 
 commonOperand
-    : L_PAR expr R_PAR
+    : '(' expr ')'
     | VAR_FUNC_NAME
-    | INT_VAL
-    | FLOAT_VAL
+    | (INT_VAL)
+    | (FLOAT_VAL)
     | BOOLEAN_VAL
-    | negativeValue
-    | queryBoolType
-    | predicateInvocation
     | functionInvocation
+    | negativeValue
     ;
 
 //Reserved names
@@ -205,6 +203,14 @@ FLOAT
 
 BOOLEAN
     : 'boolean'
+    ;
+
+KEYWORD_TRUE
+    : 'true'
+    ;
+
+KEYWORD_FALSE
+    : 'false'
     ;
 
 KEYWORD_FUNCTION
@@ -275,8 +281,8 @@ FLOAT_VAL
     ;
 
 BOOLEAN_VAL
-    : 'true'
-    | 'false'
+    : KEYWORD_TRUE
+    | KEYWORD_FALSE
     ;
 
 
