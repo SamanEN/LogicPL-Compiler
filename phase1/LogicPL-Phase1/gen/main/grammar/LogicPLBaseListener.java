@@ -317,6 +317,30 @@ public class LogicPLBaseListener implements LogicPLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterOrExpr(LogicPLParser.OrExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOrExpr(LogicPLParser.OrExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOrExpr_(LogicPLParser.OrExpr_Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOrExpr_(LogicPLParser.OrExpr_Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAndExpr(LogicPLParser.AndExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -324,6 +348,18 @@ public class LogicPLBaseListener implements LogicPLListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAndExpr(LogicPLParser.AndExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAndExpr_(LogicPLParser.AndExpr_Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAndExpr_(LogicPLParser.AndExpr_Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -341,6 +377,18 @@ public class LogicPLBaseListener implements LogicPLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterEqNotEqExpr_(LogicPLParser.EqNotEqExpr_Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEqNotEqExpr_(LogicPLParser.EqNotEqExpr_Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterRelExpr(LogicPLParser.RelExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -348,6 +396,18 @@ public class LogicPLBaseListener implements LogicPLListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitRelExpr(LogicPLParser.RelExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRelExpr_(LogicPLParser.RelExpr_Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRelExpr_(LogicPLParser.RelExpr_Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -365,6 +425,18 @@ public class LogicPLBaseListener implements LogicPLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterAddSubExpr_(LogicPLParser.AddSubExpr_Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAddSubExpr_(LogicPLParser.AddSubExpr_Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterMultDivModExpr(LogicPLParser.MultDivModExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -372,6 +444,18 @@ public class LogicPLBaseListener implements LogicPLListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMultDivModExpr(LogicPLParser.MultDivModExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMultDivModExpr_(LogicPLParser.MultDivModExpr_Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMultDivModExpr_(LogicPLParser.MultDivModExpr_Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

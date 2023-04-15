@@ -258,6 +258,26 @@ public interface LogicPLListener extends ParseTreeListener {
 	 */
 	void exitExpr(LogicPLParser.ExprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LogicPLParser#orExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterOrExpr(LogicPLParser.OrExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LogicPLParser#orExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitOrExpr(LogicPLParser.OrExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LogicPLParser#orExpr_}.
+	 * @param ctx the parse tree
+	 */
+	void enterOrExpr_(LogicPLParser.OrExpr_Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link LogicPLParser#orExpr_}.
+	 * @param ctx the parse tree
+	 */
+	void exitOrExpr_(LogicPLParser.OrExpr_Context ctx);
+	/**
 	 * Enter a parse tree produced by {@link LogicPLParser#andExpr}.
 	 * @param ctx the parse tree
 	 */
@@ -267,6 +287,16 @@ public interface LogicPLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAndExpr(LogicPLParser.AndExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LogicPLParser#andExpr_}.
+	 * @param ctx the parse tree
+	 */
+	void enterAndExpr_(LogicPLParser.AndExpr_Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link LogicPLParser#andExpr_}.
+	 * @param ctx the parse tree
+	 */
+	void exitAndExpr_(LogicPLParser.AndExpr_Context ctx);
 	/**
 	 * Enter a parse tree produced by {@link LogicPLParser#eqNotEqExpr}.
 	 * @param ctx the parse tree
@@ -278,6 +308,16 @@ public interface LogicPLListener extends ParseTreeListener {
 	 */
 	void exitEqNotEqExpr(LogicPLParser.EqNotEqExprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LogicPLParser#eqNotEqExpr_}.
+	 * @param ctx the parse tree
+	 */
+	void enterEqNotEqExpr_(LogicPLParser.EqNotEqExpr_Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link LogicPLParser#eqNotEqExpr_}.
+	 * @param ctx the parse tree
+	 */
+	void exitEqNotEqExpr_(LogicPLParser.EqNotEqExpr_Context ctx);
+	/**
 	 * Enter a parse tree produced by {@link LogicPLParser#relExpr}.
 	 * @param ctx the parse tree
 	 */
@@ -287,6 +327,16 @@ public interface LogicPLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitRelExpr(LogicPLParser.RelExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LogicPLParser#relExpr_}.
+	 * @param ctx the parse tree
+	 */
+	void enterRelExpr_(LogicPLParser.RelExpr_Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link LogicPLParser#relExpr_}.
+	 * @param ctx the parse tree
+	 */
+	void exitRelExpr_(LogicPLParser.RelExpr_Context ctx);
 	/**
 	 * Enter a parse tree produced by {@link LogicPLParser#addSubExpr}.
 	 * @param ctx the parse tree
@@ -298,6 +348,16 @@ public interface LogicPLListener extends ParseTreeListener {
 	 */
 	void exitAddSubExpr(LogicPLParser.AddSubExprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LogicPLParser#addSubExpr_}.
+	 * @param ctx the parse tree
+	 */
+	void enterAddSubExpr_(LogicPLParser.AddSubExpr_Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link LogicPLParser#addSubExpr_}.
+	 * @param ctx the parse tree
+	 */
+	void exitAddSubExpr_(LogicPLParser.AddSubExpr_Context ctx);
+	/**
 	 * Enter a parse tree produced by {@link LogicPLParser#multDivModExpr}.
 	 * @param ctx the parse tree
 	 */
@@ -307,6 +367,16 @@ public interface LogicPLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMultDivModExpr(LogicPLParser.MultDivModExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LogicPLParser#multDivModExpr_}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultDivModExpr_(LogicPLParser.MultDivModExpr_Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link LogicPLParser#multDivModExpr_}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultDivModExpr_(LogicPLParser.MultDivModExpr_Context ctx);
 	/**
 	 * Enter a parse tree produced by {@link LogicPLParser#unaryExpr}.
 	 * @param ctx the parse tree

@@ -57,8 +57,8 @@ arrInit
     ;
 
 arrValue
-    : (INT_VAL|FLOAT_VAL|BOOLEAN_VAL|VAR_FUNC_NAME|negativeValue)
-    | (INT_VAL|FLOAT_VAL|BOOLEAN_VAL|VAR_FUNC_NAME|negativeValue) COMMA arrValue
+    : (INT_VAL|FLOAT_VAL|BOOLEAN_VAL|negativeValue)
+    | (INT_VAL|FLOAT_VAL|BOOLEAN_VAL|negativeValue) COMMA arrValue
     ;
 
 print
