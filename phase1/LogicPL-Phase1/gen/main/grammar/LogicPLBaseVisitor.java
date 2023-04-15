@@ -123,13 +123,6 @@ public class LogicPLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implement
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitQuery(LogicPLParser.QueryContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitQueryBoolType(LogicPLParser.QueryBoolTypeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -200,49 +193,49 @@ public class LogicPLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implement
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLogicalOrOperand(LogicPLParser.LogicalOrOperandContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAndExpr(LogicPLParser.AndExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLogicalAndOperand(LogicPLParser.LogicalAndOperandContext ctx) { return visitChildren(ctx); }
+	@Override public T visitEqNotEqExpr(LogicPLParser.EqNotEqExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitEqNotEqOperand(LogicPLParser.EqNotEqOperandContext ctx) { return visitChildren(ctx); }
+	@Override public T visitRelExpr(LogicPLParser.RelExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRelOperand(LogicPLParser.RelOperandContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAddSubExpr(LogicPLParser.AddSubExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAddSubOperand(LogicPLParser.AddSubOperandContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMultDivModExpr(LogicPLParser.MultDivModExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMultDivModOperand(LogicPLParser.MultDivModOperandContext ctx) { return visitChildren(ctx); }
+	@Override public T visitUnaryExpr(LogicPLParser.UnaryExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitArrayAccessOperand(LogicPLParser.ArrayAccessOperandContext ctx) { return visitChildren(ctx); }
+	@Override public T visitArrayAccessExpr(LogicPLParser.ArrayAccessExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

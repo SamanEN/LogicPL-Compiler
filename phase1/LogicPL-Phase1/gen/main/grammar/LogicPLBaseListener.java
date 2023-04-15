@@ -197,18 +197,6 @@ public class LogicPLBaseListener implements LogicPLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterQuery(LogicPLParser.QueryContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitQuery(LogicPLParser.QueryContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterQueryBoolType(LogicPLParser.QueryBoolTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -329,85 +317,85 @@ public class LogicPLBaseListener implements LogicPLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLogicalOrOperand(LogicPLParser.LogicalOrOperandContext ctx) { }
+	@Override public void enterAndExpr(LogicPLParser.AndExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLogicalOrOperand(LogicPLParser.LogicalOrOperandContext ctx) { }
+	@Override public void exitAndExpr(LogicPLParser.AndExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLogicalAndOperand(LogicPLParser.LogicalAndOperandContext ctx) { }
+	@Override public void enterEqNotEqExpr(LogicPLParser.EqNotEqExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLogicalAndOperand(LogicPLParser.LogicalAndOperandContext ctx) { }
+	@Override public void exitEqNotEqExpr(LogicPLParser.EqNotEqExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterEqNotEqOperand(LogicPLParser.EqNotEqOperandContext ctx) { }
+	@Override public void enterRelExpr(LogicPLParser.RelExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitEqNotEqOperand(LogicPLParser.EqNotEqOperandContext ctx) { }
+	@Override public void exitRelExpr(LogicPLParser.RelExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRelOperand(LogicPLParser.RelOperandContext ctx) { }
+	@Override public void enterAddSubExpr(LogicPLParser.AddSubExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRelOperand(LogicPLParser.RelOperandContext ctx) { }
+	@Override public void exitAddSubExpr(LogicPLParser.AddSubExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAddSubOperand(LogicPLParser.AddSubOperandContext ctx) { }
+	@Override public void enterMultDivModExpr(LogicPLParser.MultDivModExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAddSubOperand(LogicPLParser.AddSubOperandContext ctx) { }
+	@Override public void exitMultDivModExpr(LogicPLParser.MultDivModExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMultDivModOperand(LogicPLParser.MultDivModOperandContext ctx) { }
+	@Override public void enterUnaryExpr(LogicPLParser.UnaryExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMultDivModOperand(LogicPLParser.MultDivModOperandContext ctx) { }
+	@Override public void exitUnaryExpr(LogicPLParser.UnaryExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArrayAccessOperand(LogicPLParser.ArrayAccessOperandContext ctx) { }
+	@Override public void enterArrayAccessExpr(LogicPLParser.ArrayAccessExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArrayAccessOperand(LogicPLParser.ArrayAccessOperandContext ctx) { }
+	@Override public void exitArrayAccessExpr(LogicPLParser.ArrayAccessExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

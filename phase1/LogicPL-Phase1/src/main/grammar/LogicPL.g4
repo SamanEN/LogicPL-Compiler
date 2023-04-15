@@ -134,50 +134,52 @@ arrIndexing
     ;
 
 expr
-    : expr '||' logicalOrOperand {System.out.println("Operator: ||");}
-    | logicalOrOperand
+    : andExpr ('&&' andExpr {System.out.println("Operator: ||");})*
     ;
 
-logicalOrOperand
-    : logicalOrOperand '&&' logicalAndOperand {System.out.println("Operator: &&");}
-    | logicalAndOperand
+andExpr
+    : eqNotEqExpr ('&&' eqNotEqExpr {System.out.println("Operator: &&");})*
     ;
 
-logicalAndOperand
-    : logicalAndOperand '==' eqNotEqOperand {System.out.println("Operator: ==");}
-    | logicalAndOperand '!=' eqNotEqOperand {System.out.println("Operator: !=");}
-    | eqNotEqOperand
+eqNotEqExpr
+    : relExpr (
+        '==' relExpr {System.out.println("Operator: ==");}
+        |'!=' relExpr {System.out.println("Operator: !=");}
+    )*
     ;
 
-eqNotEqOperand
-    : eqNotEqOperand '<' relOperand {System.out.println("Operator: <");}
-    | eqNotEqOperand '>' relOperand {System.out.println("Operator: >");}
-    | eqNotEqOperand '<=' relOperand {System.out.println("Operator: <=");}
-    | eqNotEqOperand '>=' relOperand {System.out.println("Operator: >=");}
-    | relOperand
+relExpr
+    : addSubExpr (
+        '<' addSubExpr {System.out.println("Operator: <");}
+        | '>' addSubExpr {System.out.println("Operator: >");}
+        | '<=' addSubExpr {System.out.println("Operator: <=");}
+        | '>=' addSubExpr {System.out.println("Operator: >=");}
+    )*
     ;
 
-relOperand
-    : relOperand '+' addSubOperand {System.out.println("Operator: +");}
-    | relOperand '-' addSubOperand {System.out.println("Operator: -");}
-    | addSubOperand
+addSubExpr
+    : multDivModExpr (
+        '+' multDivModExpr {System.out.println("Operator: +");}
+        | '-' multDivModExpr {System.out.println("Operator: -");}
+    )*
     ;
 
-addSubOperand
-    : addSubOperand '*' multDivModOperand {System.out.println("Operator: *");}
-    | addSubOperand '/' multDivModOperand {System.out.println("Operator: /");}
-    | addSubOperand '%' multDivModOperand {System.out.println("Operator: %");}
-    | multDivModOperand
+multDivModExpr
+    : unaryExpr (
+        '*' unaryExpr {System.out.println("Operator: *");}
+        | '/' unaryExpr {System.out.println("Operator: /");}
+        | '%' unaryExpr {System.out.println("Operator: %");}
+    )*
     ;
 
-multDivModOperand
-    : '+' multDivModOperand {System.out.println("Operator: +");}
-    | '-' multDivModOperand {System.out.println("Operator: -");}
-    | '!' multDivModOperand {System.out.println("Operator: !");}
-    | arrayAccessOperand
+unaryExpr
+    : '+' unaryExpr {System.out.println("Operator: +");}
+    | '-' unaryExpr {System.out.println("Operator: -");}
+    | '!' unaryExpr {System.out.println("Operator: !");}
+    | arrayAccessExpr
     ;
 
-arrayAccessOperand
+arrayAccessExpr
     : VAR_FUNC_NAME L_BRACKET expr R_BRACKET
     | commonOperand
     ;

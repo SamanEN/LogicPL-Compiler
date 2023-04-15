@@ -158,16 +158,6 @@ public interface LogicPLListener extends ParseTreeListener {
 	 */
 	void exitImplicationExpr(LogicPLParser.ImplicationExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LogicPLParser#query}.
-	 * @param ctx the parse tree
-	 */
-	void enterQuery(LogicPLParser.QueryContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LogicPLParser#query}.
-	 * @param ctx the parse tree
-	 */
-	void exitQuery(LogicPLParser.QueryContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link LogicPLParser#queryBoolType}.
 	 * @param ctx the parse tree
 	 */
@@ -268,75 +258,75 @@ public interface LogicPLListener extends ParseTreeListener {
 	 */
 	void exitExpr(LogicPLParser.ExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LogicPLParser#logicalOrOperand}.
+	 * Enter a parse tree produced by {@link LogicPLParser#andExpr}.
 	 * @param ctx the parse tree
 	 */
-	void enterLogicalOrOperand(LogicPLParser.LogicalOrOperandContext ctx);
+	void enterAndExpr(LogicPLParser.AndExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LogicPLParser#logicalOrOperand}.
+	 * Exit a parse tree produced by {@link LogicPLParser#andExpr}.
 	 * @param ctx the parse tree
 	 */
-	void exitLogicalOrOperand(LogicPLParser.LogicalOrOperandContext ctx);
+	void exitAndExpr(LogicPLParser.AndExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LogicPLParser#logicalAndOperand}.
+	 * Enter a parse tree produced by {@link LogicPLParser#eqNotEqExpr}.
 	 * @param ctx the parse tree
 	 */
-	void enterLogicalAndOperand(LogicPLParser.LogicalAndOperandContext ctx);
+	void enterEqNotEqExpr(LogicPLParser.EqNotEqExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LogicPLParser#logicalAndOperand}.
+	 * Exit a parse tree produced by {@link LogicPLParser#eqNotEqExpr}.
 	 * @param ctx the parse tree
 	 */
-	void exitLogicalAndOperand(LogicPLParser.LogicalAndOperandContext ctx);
+	void exitEqNotEqExpr(LogicPLParser.EqNotEqExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LogicPLParser#eqNotEqOperand}.
+	 * Enter a parse tree produced by {@link LogicPLParser#relExpr}.
 	 * @param ctx the parse tree
 	 */
-	void enterEqNotEqOperand(LogicPLParser.EqNotEqOperandContext ctx);
+	void enterRelExpr(LogicPLParser.RelExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LogicPLParser#eqNotEqOperand}.
+	 * Exit a parse tree produced by {@link LogicPLParser#relExpr}.
 	 * @param ctx the parse tree
 	 */
-	void exitEqNotEqOperand(LogicPLParser.EqNotEqOperandContext ctx);
+	void exitRelExpr(LogicPLParser.RelExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LogicPLParser#relOperand}.
+	 * Enter a parse tree produced by {@link LogicPLParser#addSubExpr}.
 	 * @param ctx the parse tree
 	 */
-	void enterRelOperand(LogicPLParser.RelOperandContext ctx);
+	void enterAddSubExpr(LogicPLParser.AddSubExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LogicPLParser#relOperand}.
+	 * Exit a parse tree produced by {@link LogicPLParser#addSubExpr}.
 	 * @param ctx the parse tree
 	 */
-	void exitRelOperand(LogicPLParser.RelOperandContext ctx);
+	void exitAddSubExpr(LogicPLParser.AddSubExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LogicPLParser#addSubOperand}.
+	 * Enter a parse tree produced by {@link LogicPLParser#multDivModExpr}.
 	 * @param ctx the parse tree
 	 */
-	void enterAddSubOperand(LogicPLParser.AddSubOperandContext ctx);
+	void enterMultDivModExpr(LogicPLParser.MultDivModExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LogicPLParser#addSubOperand}.
+	 * Exit a parse tree produced by {@link LogicPLParser#multDivModExpr}.
 	 * @param ctx the parse tree
 	 */
-	void exitAddSubOperand(LogicPLParser.AddSubOperandContext ctx);
+	void exitMultDivModExpr(LogicPLParser.MultDivModExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LogicPLParser#multDivModOperand}.
+	 * Enter a parse tree produced by {@link LogicPLParser#unaryExpr}.
 	 * @param ctx the parse tree
 	 */
-	void enterMultDivModOperand(LogicPLParser.MultDivModOperandContext ctx);
+	void enterUnaryExpr(LogicPLParser.UnaryExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LogicPLParser#multDivModOperand}.
+	 * Exit a parse tree produced by {@link LogicPLParser#unaryExpr}.
 	 * @param ctx the parse tree
 	 */
-	void exitMultDivModOperand(LogicPLParser.MultDivModOperandContext ctx);
+	void exitUnaryExpr(LogicPLParser.UnaryExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LogicPLParser#arrayAccessOperand}.
+	 * Enter a parse tree produced by {@link LogicPLParser#arrayAccessExpr}.
 	 * @param ctx the parse tree
 	 */
-	void enterArrayAccessOperand(LogicPLParser.ArrayAccessOperandContext ctx);
+	void enterArrayAccessExpr(LogicPLParser.ArrayAccessExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LogicPLParser#arrayAccessOperand}.
+	 * Exit a parse tree produced by {@link LogicPLParser#arrayAccessExpr}.
 	 * @param ctx the parse tree
 	 */
-	void exitArrayAccessOperand(LogicPLParser.ArrayAccessOperandContext ctx);
+	void exitArrayAccessExpr(LogicPLParser.ArrayAccessExprContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LogicPLParser#commonOperand}.
 	 * @param ctx the parse tree

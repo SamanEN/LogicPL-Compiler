@@ -101,12 +101,6 @@ public interface LogicPLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitImplicationExpr(LogicPLParser.ImplicationExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LogicPLParser#query}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitQuery(LogicPLParser.QueryContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link LogicPLParser#queryBoolType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -167,47 +161,47 @@ public interface LogicPLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExpr(LogicPLParser.ExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LogicPLParser#logicalOrOperand}.
+	 * Visit a parse tree produced by {@link LogicPLParser#andExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLogicalOrOperand(LogicPLParser.LogicalOrOperandContext ctx);
+	T visitAndExpr(LogicPLParser.AndExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LogicPLParser#logicalAndOperand}.
+	 * Visit a parse tree produced by {@link LogicPLParser#eqNotEqExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLogicalAndOperand(LogicPLParser.LogicalAndOperandContext ctx);
+	T visitEqNotEqExpr(LogicPLParser.EqNotEqExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LogicPLParser#eqNotEqOperand}.
+	 * Visit a parse tree produced by {@link LogicPLParser#relExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitEqNotEqOperand(LogicPLParser.EqNotEqOperandContext ctx);
+	T visitRelExpr(LogicPLParser.RelExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LogicPLParser#relOperand}.
+	 * Visit a parse tree produced by {@link LogicPLParser#addSubExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRelOperand(LogicPLParser.RelOperandContext ctx);
+	T visitAddSubExpr(LogicPLParser.AddSubExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LogicPLParser#addSubOperand}.
+	 * Visit a parse tree produced by {@link LogicPLParser#multDivModExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAddSubOperand(LogicPLParser.AddSubOperandContext ctx);
+	T visitMultDivModExpr(LogicPLParser.MultDivModExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LogicPLParser#multDivModOperand}.
+	 * Visit a parse tree produced by {@link LogicPLParser#unaryExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMultDivModOperand(LogicPLParser.MultDivModOperandContext ctx);
+	T visitUnaryExpr(LogicPLParser.UnaryExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LogicPLParser#arrayAccessOperand}.
+	 * Visit a parse tree produced by {@link LogicPLParser#arrayAccessExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitArrayAccessOperand(LogicPLParser.ArrayAccessOperandContext ctx);
+	T visitArrayAccessExpr(LogicPLParser.ArrayAccessExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LogicPLParser#commonOperand}.
 	 * @param ctx the parse tree
