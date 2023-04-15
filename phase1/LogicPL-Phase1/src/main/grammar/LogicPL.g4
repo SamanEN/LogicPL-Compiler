@@ -67,6 +67,7 @@ print
     : KEYWORD_PRINT L_PAR VAR_FUNC_NAME R_PAR
     | KEYWORD_PRINT L_PAR queryListType R_PAR
     | KEYWORD_PRINT L_PAR queryBoolType R_PAR
+    | KEYWORD_PRINT L_PAR arrIndexing R_PAR
     ;
 
 predicateInvocation
@@ -227,7 +228,6 @@ commonOperand
     | BOOLEAN_VAL
     | negativeValue
     | queryBoolType
-    | predicateInvocation
     | functionInvocation
     ;
 
