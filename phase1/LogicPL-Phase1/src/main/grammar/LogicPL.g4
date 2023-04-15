@@ -35,7 +35,7 @@ assignment
     ;
 
 returnStatement
-    : KEYWORD_RETURN {System.out.println("Return");} (INT_VAL|FLOAT_VAL|BOOLEAN_VAL|VAR_FUNC_NAME)
+    : KEYWORD_RETURN {System.out.println("Return");} (INT_VAL|FLOAT_VAL|BOOLEAN_VAL|VAR_FUNC_NAME|negativeValue)
     | KEYWORD_RETURN {System.out.println("Return");}
     ;
 
@@ -100,7 +100,7 @@ forLoop
 //Function
 function
     : KEYWORD_FUNCTION {System.out.print("FunctionDec: ");} VAR_FUNC_NAME {System.out.println($VAR_FUNC_NAME.text);} L_PAR {System.out.print("ArgumentDec: ");} functionArgsList R_PAR ':' (INT | FLOAT | BOOLEAN) L_BRACE multiStatement R_BRACE
-    | KEYWORD_FUNCTION {System.out.println("FunctionDec: ");} VAR_FUNC_NAME {System.out.print($VAR_FUNC_NAME.getText());} L_PAR R_PAR ':' (INT | FLOAT | BOOLEAN) L_BRACE multiStatement R_BRACE
+    | KEYWORD_FUNCTION {System.out.print("FunctionDec: ");} VAR_FUNC_NAME {System.out.println($VAR_FUNC_NAME.getText());} L_PAR R_PAR ':' (INT | FLOAT | BOOLEAN) L_BRACE multiStatement R_BRACE
     ;
 
 functionArgsList
@@ -124,9 +124,8 @@ functionInvocationArgsList
 
 //Variable referencing
 negativeValue
-    : '-' negativeValue
-    | INT_VAL
-    | FLOAT_VAL
+    : '-' INT_VAL {System.out.println("Operator: -");}
+    | '-' FLOAT_VAL {System.out.println("Operator: +");}
     ;
 
 arrIndexing
@@ -134,42 +133,70 @@ arrIndexing
     ;
 
 expr
-    : andExpr ('&&' andExpr {System.out.println("Operator: ||");})*
+    : orExpr
+    ;
+
+orExpr
+    : andExpr orExpr_
+    ;
+
+orExpr_
+    : '||' andExpr orExpr_ {System.out.println("Operator: ||");}
+    |
     ;
 
 andExpr
-    : eqNotEqExpr ('&&' eqNotEqExpr {System.out.println("Operator: &&");})*
+    : eqNotEqExpr andExpr_
+    ;
+
+andExpr_
+    : '&&' eqNotEqExpr andExpr_ {System.out.println("Operator: &&");}
+    |
     ;
 
 eqNotEqExpr
-    : relExpr (
-        '==' relExpr {System.out.println("Operator: ==");}
-        |'!=' relExpr {System.out.println("Operator: !=");}
-    )*
+    : relExpr eqNotEqExpr_
+    ;
+
+eqNotEqExpr_
+    : '==' relExpr eqNotEqExpr_ {System.out.println("Operator: ==");}
+    | '!=' relExpr eqNotEqExpr_ {System.out.println("Operator: !=");}
+    |
     ;
 
 relExpr
-    : addSubExpr (
-        '<' addSubExpr {System.out.println("Operator: <");}
-        | '>' addSubExpr {System.out.println("Operator: >");}
-        | '<=' addSubExpr {System.out.println("Operator: <=");}
-        | '>=' addSubExpr {System.out.println("Operator: >=");}
-    )*
+    : addSubExpr relExpr_
+    ;
+
+relExpr_
+    : '<' addSubExpr relExpr_ {System.out.println("Operator: <");}
+    | '>' addSubExpr relExpr_{System.out.println("Operator: >");}
+    | '<=' addSubExpr relExpr_{System.out.println("Operator: <=");}
+    | '>=' addSubExpr relExpr_{System.out.println("Operator: >=");}
+    |
     ;
 
 addSubExpr
-    : multDivModExpr (
-        '+' multDivModExpr {System.out.println("Operator: +");}
-        | '-' multDivModExpr {System.out.println("Operator: -");}
-    )*
+    : multDivModExpr addSubExpr_
+    | multDivModExpr
+    ;
+
+addSubExpr_
+    : '+' multDivModExpr addSubExpr_ {System.out.println("Operator: +");}
+    | '-' multDivModExpr addSubExpr_ {System.out.println("Operator: -");}
+    |
     ;
 
 multDivModExpr
-    : unaryExpr (
-        '*' unaryExpr {System.out.println("Operator: *");}
-        | '/' unaryExpr {System.out.println("Operator: /");}
-        | '%' unaryExpr {System.out.println("Operator: %");}
-    )*
+    : unaryExpr multDivModExpr_
+    | unaryExpr
+    ;
+
+multDivModExpr_
+    : '*' unaryExpr multDivModExpr_ {System.out.println("Operator: *");}
+    | '/' unaryExpr multDivModExpr_ {System.out.println("Operator: /");}
+    | '%' unaryExpr multDivModExpr_ {System.out.println("Operator: %");}
+    |
     ;
 
 unaryExpr
