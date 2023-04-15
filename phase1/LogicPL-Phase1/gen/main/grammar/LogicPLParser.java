@@ -17,13 +17,13 @@ public class LogicPLParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
-		INT=18, FLOAT=19, BOOLEAN=20, KEYWORD_FUNCTION=21, KEYWORD_MAIN=22, KEYWORD_PRINT=23, 
-		KEYWORD_FOR=24, KEYWORD_RETURN=25, EQ=26, L_BRACKET=27, R_BRACKET=28, 
-		L_BRACE=29, R_BRACE=30, L_PAR=31, R_PAR=32, COMMA=33, END_OF_STATEMENT=34, 
-		INT_VAL=35, FLOAT_VAL=36, BOOLEAN_VAL=37, VAR_FUNC_NAME=38, PREDICATE_NAME=39, 
-		COMMENT=40, WHITE_SPACE=41;
+		IMPLICATION_OPERATOR=1, Q_MARK=2, COLON=3, LOGICAL_OR=4, LOGICAL_AND=5, 
+		EQ=6, NOT_EQ=7, GT=8, LT=9, GT_EQ=10, LT_EQ=11, PLUS=12, MINUS=13, STAR=14, 
+		DIV=15, MOD=16, LOGICAL_NOT=17, ASSIGN=18, INT=19, FLOAT=20, BOOLEAN=21, 
+		KEYWORD_FUNCTION=22, KEYWORD_MAIN=23, KEYWORD_PRINT=24, KEYWORD_FOR=25, 
+		KEYWORD_RETURN=26, L_BRACKET=27, R_BRACKET=28, L_BRACE=29, R_BRACE=30, 
+		L_PAR=31, R_PAR=32, COMMA=33, END_OF_STATEMENT=34, INT_VAL=35, FLOAT_VAL=36, 
+		BOOLEAN_VAL=37, VAR_FUNC_NAME=38, PREDICATE_NAME=39, COMMENT=40, WHITE_SPACE=41;
 	public static final int
 		RULE_logicpl = 0, RULE_main = 1, RULE_multiStatement = 2, RULE_statement = 3, 
 		RULE_assignment = 4, RULE_returnStatement = 5, RULE_varInit = 6, RULE_varDec = 7, 
@@ -52,21 +52,22 @@ public class LogicPLParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'=>'", "'?'", "':'", "'-'", "'||'", "'&&'", "'=='", "'!='", "'<'", 
-			"'>'", "'<='", "'>='", "'+'", "'*'", "'/'", "'%'", "'!'", "'int'", "'float'", 
-			"'boolean'", "'function'", "'main'", "'print'", "'for'", "'return'", 
-			"'='", "'['", "']'", "'{'", "'}'", "'('", "')'", "','", "';'"
+			null, "'=>'", "'?'", "':'", "'||'", "'&&'", "'=='", "'!='", "'>'", "'<'", 
+			"'>='", "'<='", "'+'", "'-'", "'*'", "'/'", "'%'", "'!'", "'='", "'int'", 
+			"'float'", "'boolean'", "'function'", "'main'", "'print'", "'for'", "'return'", 
+			"'['", "']'", "'{'", "'}'", "'('", "')'", "','", "';'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, "INT", "FLOAT", "BOOLEAN", "KEYWORD_FUNCTION", 
-			"KEYWORD_MAIN", "KEYWORD_PRINT", "KEYWORD_FOR", "KEYWORD_RETURN", "EQ", 
-			"L_BRACKET", "R_BRACKET", "L_BRACE", "R_BRACE", "L_PAR", "R_PAR", "COMMA", 
-			"END_OF_STATEMENT", "INT_VAL", "FLOAT_VAL", "BOOLEAN_VAL", "VAR_FUNC_NAME", 
-			"PREDICATE_NAME", "COMMENT", "WHITE_SPACE"
+			null, "IMPLICATION_OPERATOR", "Q_MARK", "COLON", "LOGICAL_OR", "LOGICAL_AND", 
+			"EQ", "NOT_EQ", "GT", "LT", "GT_EQ", "LT_EQ", "PLUS", "MINUS", "STAR", 
+			"DIV", "MOD", "LOGICAL_NOT", "ASSIGN", "INT", "FLOAT", "BOOLEAN", "KEYWORD_FUNCTION", 
+			"KEYWORD_MAIN", "KEYWORD_PRINT", "KEYWORD_FOR", "KEYWORD_RETURN", "L_BRACKET", 
+			"R_BRACKET", "L_BRACE", "R_BRACE", "L_PAR", "R_PAR", "COMMA", "END_OF_STATEMENT", 
+			"INT_VAL", "FLOAT_VAL", "BOOLEAN_VAL", "VAR_FUNC_NAME", "PREDICATE_NAME", 
+			"COMMENT", "WHITE_SPACE"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -489,7 +490,7 @@ public class LogicPLParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class AssignmentContext extends ParserRuleContext {
 		public TerminalNode VAR_FUNC_NAME() { return getToken(LogicPLParser.VAR_FUNC_NAME, 0); }
-		public TerminalNode EQ() { return getToken(LogicPLParser.EQ, 0); }
+		public TerminalNode ASSIGN() { return getToken(LogicPLParser.ASSIGN, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
@@ -528,7 +529,7 @@ public class LogicPLParser extends Parser {
 				setState(138);
 				match(VAR_FUNC_NAME);
 				setState(139);
-				match(EQ);
+				match(ASSIGN);
 				setState(140);
 				expr();
 				}
@@ -539,7 +540,7 @@ public class LogicPLParser extends Parser {
 				setState(141);
 				arrIndexing();
 				setState(142);
-				match(EQ);
+				match(ASSIGN);
 				setState(143);
 				expr();
 				}
@@ -626,7 +627,7 @@ public class LogicPLParser extends Parser {
 					match(VAR_FUNC_NAME);
 					}
 					break;
-				case T__3:
+				case MINUS:
 					{
 					setState(153);
 					negativeValue();
@@ -662,7 +663,7 @@ public class LogicPLParser extends Parser {
 	public static class VarInitContext extends ParserRuleContext {
 		public Token VAR_FUNC_NAME;
 		public TerminalNode VAR_FUNC_NAME() { return getToken(LogicPLParser.VAR_FUNC_NAME, 0); }
-		public TerminalNode EQ() { return getToken(LogicPLParser.EQ, 0); }
+		public TerminalNode ASSIGN() { return getToken(LogicPLParser.ASSIGN, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
@@ -697,7 +698,7 @@ public class LogicPLParser extends Parser {
 			{
 			setState(160);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1835008L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 3670016L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -709,7 +710,7 @@ public class LogicPLParser extends Parser {
 			((VarInitContext)_localctx).VAR_FUNC_NAME = match(VAR_FUNC_NAME);
 			System.out.println(((VarInitContext)_localctx).VAR_FUNC_NAME.getText());
 			setState(163);
-			match(EQ);
+			match(ASSIGN);
 			setState(164);
 			expr();
 			}
@@ -760,7 +761,7 @@ public class LogicPLParser extends Parser {
 			{
 			setState(166);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1835008L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 3670016L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -822,7 +823,7 @@ public class LogicPLParser extends Parser {
 			{
 			setState(170);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1835008L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 3670016L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -865,7 +866,7 @@ public class LogicPLParser extends Parser {
 			return getToken(LogicPLParser.R_BRACKET, i);
 		}
 		public TerminalNode VAR_FUNC_NAME() { return getToken(LogicPLParser.VAR_FUNC_NAME, 0); }
-		public TerminalNode EQ() { return getToken(LogicPLParser.EQ, 0); }
+		public TerminalNode ASSIGN() { return getToken(LogicPLParser.ASSIGN, 0); }
 		public ArrValueContext arrValue() {
 			return getRuleContext(ArrValueContext.class,0);
 		}
@@ -900,7 +901,7 @@ public class LogicPLParser extends Parser {
 			{
 			setState(177);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1835008L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 3670016L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -918,7 +919,7 @@ public class LogicPLParser extends Parser {
 			((ArrInitContext)_localctx).VAR_FUNC_NAME = match(VAR_FUNC_NAME);
 			System.out.println(((ArrInitContext)_localctx).VAR_FUNC_NAME.getText());
 			setState(183);
-			match(EQ);
+			match(ASSIGN);
 			setState(184);
 			match(L_BRACKET);
 			setState(185);
@@ -1000,7 +1001,7 @@ public class LogicPLParser extends Parser {
 					match(BOOLEAN_VAL);
 					}
 					break;
-				case T__3:
+				case MINUS:
 					{
 					setState(191);
 					negativeValue();
@@ -1035,7 +1036,7 @@ public class LogicPLParser extends Parser {
 					match(BOOLEAN_VAL);
 					}
 					break;
-				case T__3:
+				case MINUS:
 					{
 					setState(197);
 					negativeValue();
@@ -1243,6 +1244,7 @@ public class LogicPLParser extends Parser {
 		public TerminalNode R_PAR(int i) {
 			return getToken(LogicPLParser.R_PAR, i);
 		}
+		public TerminalNode IMPLICATION_OPERATOR() { return getToken(LogicPLParser.IMPLICATION_OPERATOR, 0); }
 		public ImplicationExprContext implicationExpr() {
 			return getRuleContext(ImplicationExprContext.class,0);
 		}
@@ -1278,7 +1280,7 @@ public class LogicPLParser extends Parser {
 			setState(235);
 			match(R_PAR);
 			setState(236);
-			match(T__0);
+			match(IMPLICATION_OPERATOR);
 			setState(237);
 			match(L_PAR);
 			setState(238);
@@ -1346,6 +1348,7 @@ public class LogicPLParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class QueryBoolTypeContext extends ParserRuleContext {
 		public TerminalNode L_BRACKET() { return getToken(LogicPLParser.L_BRACKET, 0); }
+		public TerminalNode Q_MARK() { return getToken(LogicPLParser.Q_MARK, 0); }
 		public PredicateInvocationContext predicateInvocation() {
 			return getRuleContext(PredicateInvocationContext.class,0);
 		}
@@ -1378,7 +1381,7 @@ public class LogicPLParser extends Parser {
 			setState(243);
 			match(L_BRACKET);
 			setState(244);
-			match(T__1);
+			match(Q_MARK);
 			setState(245);
 			predicateInvocation();
 			setState(246);
@@ -1402,6 +1405,7 @@ public class LogicPLParser extends Parser {
 		public TerminalNode L_BRACKET() { return getToken(LogicPLParser.L_BRACKET, 0); }
 		public TerminalNode PREDICATE_NAME() { return getToken(LogicPLParser.PREDICATE_NAME, 0); }
 		public TerminalNode L_PAR() { return getToken(LogicPLParser.L_PAR, 0); }
+		public TerminalNode Q_MARK() { return getToken(LogicPLParser.Q_MARK, 0); }
 		public TerminalNode R_PAR() { return getToken(LogicPLParser.R_PAR, 0); }
 		public TerminalNode R_BRACKET() { return getToken(LogicPLParser.R_BRACKET, 0); }
 		public QueryListTypeContext(ParserRuleContext parent, int invokingState) {
@@ -1437,7 +1441,7 @@ public class LogicPLParser extends Parser {
 			setState(251);
 			match(L_PAR);
 			setState(252);
-			match(T__1);
+			match(Q_MARK);
 			setState(253);
 			match(R_PAR);
 			setState(254);
@@ -1463,6 +1467,7 @@ public class LogicPLParser extends Parser {
 		public TerminalNode VAR_FUNC_NAME(int i) {
 			return getToken(LogicPLParser.VAR_FUNC_NAME, i);
 		}
+		public TerminalNode COLON() { return getToken(LogicPLParser.COLON, 0); }
 		public TerminalNode R_PAR() { return getToken(LogicPLParser.R_PAR, 0); }
 		public TerminalNode L_BRACE() { return getToken(LogicPLParser.L_BRACE, 0); }
 		public TerminalNode R_BRACE() { return getToken(LogicPLParser.R_BRACE, 0); }
@@ -1506,7 +1511,7 @@ public class LogicPLParser extends Parser {
 				setState(259);
 				match(VAR_FUNC_NAME);
 				setState(260);
-				match(T__2);
+				match(COLON);
 				setState(261);
 				match(VAR_FUNC_NAME);
 				setState(262);
@@ -1528,7 +1533,7 @@ public class LogicPLParser extends Parser {
 				setState(268);
 				match(VAR_FUNC_NAME);
 				setState(269);
-				match(T__2);
+				match(COLON);
 				setState(270);
 				match(VAR_FUNC_NAME);
 				setState(271);
@@ -1564,6 +1569,7 @@ public class LogicPLParser extends Parser {
 			return getRuleContext(FunctionArgsListContext.class,0);
 		}
 		public TerminalNode R_PAR() { return getToken(LogicPLParser.R_PAR, 0); }
+		public TerminalNode COLON() { return getToken(LogicPLParser.COLON, 0); }
 		public TerminalNode L_BRACE() { return getToken(LogicPLParser.L_BRACE, 0); }
 		public MultiStatementContext multiStatement() {
 			return getRuleContext(MultiStatementContext.class,0);
@@ -1616,10 +1622,10 @@ public class LogicPLParser extends Parser {
 				setState(285);
 				match(R_PAR);
 				setState(286);
-				match(T__2);
+				match(COLON);
 				setState(287);
 				_la = _input.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1835008L) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 3670016L) != 0)) ) {
 				_errHandler.recoverInline(this);
 				}
 				else {
@@ -1643,16 +1649,16 @@ public class LogicPLParser extends Parser {
 				System.out.print("FunctionDec: ");
 				setState(294);
 				((FunctionContext)_localctx).VAR_FUNC_NAME = match(VAR_FUNC_NAME);
-				System.out.println(((FunctionContext)_localctx).VAR_FUNC_NAME.getText());
+				System.out.println((((FunctionContext)_localctx).VAR_FUNC_NAME!=null?((FunctionContext)_localctx).VAR_FUNC_NAME.getText():null));
 				setState(296);
 				match(L_PAR);
 				setState(297);
 				match(R_PAR);
 				setState(298);
-				match(T__2);
+				match(COLON);
 				setState(299);
 				_la = _input.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1835008L) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 3670016L) != 0)) ) {
 				_errHandler.recoverInline(this);
 				}
 				else {
@@ -1948,6 +1954,7 @@ public class LogicPLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class NegativeValueContext extends ParserRuleContext {
+		public TerminalNode MINUS() { return getToken(LogicPLParser.MINUS, 0); }
 		public TerminalNode INT_VAL() { return getToken(LogicPLParser.INT_VAL, 0); }
 		public TerminalNode FLOAT_VAL() { return getToken(LogicPLParser.FLOAT_VAL, 0); }
 		public NegativeValueContext(ParserRuleContext parent, int invokingState) {
@@ -1980,7 +1987,7 @@ public class LogicPLParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(339);
-				match(T__3);
+				match(MINUS);
 				setState(340);
 				match(INT_VAL);
 				System.out.println("Operator: -");
@@ -1990,7 +1997,7 @@ public class LogicPLParser extends Parser {
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(342);
-				match(T__3);
+				match(MINUS);
 				setState(343);
 				match(FLOAT_VAL);
 				System.out.println("Operator: +");
@@ -2160,6 +2167,7 @@ public class LogicPLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class OrExpr_Context extends ParserRuleContext {
+		public TerminalNode LOGICAL_OR() { return getToken(LogicPLParser.LOGICAL_OR, 0); }
 		public AndExprContext andExpr() {
 			return getRuleContext(AndExprContext.class,0);
 		}
@@ -2192,11 +2200,11 @@ public class LogicPLParser extends Parser {
 			setState(363);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__4:
+			case LOGICAL_OR:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(357);
-				match(T__4);
+				match(LOGICAL_OR);
 				setState(358);
 				andExpr();
 				setState(359);
@@ -2279,6 +2287,7 @@ public class LogicPLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class AndExpr_Context extends ParserRuleContext {
+		public TerminalNode LOGICAL_AND() { return getToken(LogicPLParser.LOGICAL_AND, 0); }
 		public EqNotEqExprContext eqNotEqExpr() {
 			return getRuleContext(EqNotEqExprContext.class,0);
 		}
@@ -2311,11 +2320,11 @@ public class LogicPLParser extends Parser {
 			setState(374);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__5:
+			case LOGICAL_AND:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(368);
-				match(T__5);
+				match(LOGICAL_AND);
 				setState(369);
 				eqNotEqExpr();
 				setState(370);
@@ -2323,7 +2332,7 @@ public class LogicPLParser extends Parser {
 				System.out.println("Operator: &&");
 				}
 				break;
-			case T__4:
+			case LOGICAL_OR:
 			case R_BRACKET:
 			case R_PAR:
 			case COMMA:
@@ -2399,12 +2408,14 @@ public class LogicPLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class EqNotEqExpr_Context extends ParserRuleContext {
+		public TerminalNode EQ() { return getToken(LogicPLParser.EQ, 0); }
 		public RelExprContext relExpr() {
 			return getRuleContext(RelExprContext.class,0);
 		}
 		public EqNotEqExpr_Context eqNotEqExpr_() {
 			return getRuleContext(EqNotEqExpr_Context.class,0);
 		}
+		public TerminalNode NOT_EQ() { return getToken(LogicPLParser.NOT_EQ, 0); }
 		public EqNotEqExpr_Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2431,11 +2442,11 @@ public class LogicPLParser extends Parser {
 			setState(390);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__6:
+			case EQ:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(379);
-				match(T__6);
+				match(EQ);
 				setState(380);
 				relExpr();
 				setState(381);
@@ -2443,11 +2454,11 @@ public class LogicPLParser extends Parser {
 				System.out.println("Operator: ==");
 				}
 				break;
-			case T__7:
+			case NOT_EQ:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(384);
-				match(T__7);
+				match(NOT_EQ);
 				setState(385);
 				relExpr();
 				setState(386);
@@ -2455,8 +2466,8 @@ public class LogicPLParser extends Parser {
 				System.out.println("Operator: !=");
 				}
 				break;
-			case T__4:
-			case T__5:
+			case LOGICAL_OR:
+			case LOGICAL_AND:
 			case R_BRACKET:
 			case R_PAR:
 			case COMMA:
@@ -2532,12 +2543,16 @@ public class LogicPLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class RelExpr_Context extends ParserRuleContext {
+		public TerminalNode LT() { return getToken(LogicPLParser.LT, 0); }
 		public AddSubExprContext addSubExpr() {
 			return getRuleContext(AddSubExprContext.class,0);
 		}
 		public RelExpr_Context relExpr_() {
 			return getRuleContext(RelExpr_Context.class,0);
 		}
+		public TerminalNode GT() { return getToken(LogicPLParser.GT, 0); }
+		public TerminalNode LT_EQ() { return getToken(LogicPLParser.LT_EQ, 0); }
+		public TerminalNode GT_EQ() { return getToken(LogicPLParser.GT_EQ, 0); }
 		public RelExpr_Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2564,11 +2579,11 @@ public class LogicPLParser extends Parser {
 			setState(416);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__8:
+			case LT:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(395);
-				match(T__8);
+				match(LT);
 				setState(396);
 				addSubExpr();
 				setState(397);
@@ -2576,11 +2591,11 @@ public class LogicPLParser extends Parser {
 				System.out.println("Operator: <");
 				}
 				break;
-			case T__9:
+			case GT:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(400);
-				match(T__9);
+				match(GT);
 				setState(401);
 				addSubExpr();
 				setState(402);
@@ -2588,11 +2603,11 @@ public class LogicPLParser extends Parser {
 				System.out.println("Operator: >");
 				}
 				break;
-			case T__10:
+			case LT_EQ:
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(405);
-				match(T__10);
+				match(LT_EQ);
 				setState(406);
 				addSubExpr();
 				setState(407);
@@ -2600,11 +2615,11 @@ public class LogicPLParser extends Parser {
 				System.out.println("Operator: <=");
 				}
 				break;
-			case T__11:
+			case GT_EQ:
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(410);
-				match(T__11);
+				match(GT_EQ);
 				setState(411);
 				addSubExpr();
 				setState(412);
@@ -2612,10 +2627,10 @@ public class LogicPLParser extends Parser {
 				System.out.println("Operator: >=");
 				}
 				break;
-			case T__4:
-			case T__5:
-			case T__6:
-			case T__7:
+			case LOGICAL_OR:
+			case LOGICAL_AND:
+			case EQ:
+			case NOT_EQ:
 			case R_BRACKET:
 			case R_PAR:
 			case COMMA:
@@ -2704,12 +2719,14 @@ public class LogicPLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class AddSubExpr_Context extends ParserRuleContext {
+		public TerminalNode PLUS() { return getToken(LogicPLParser.PLUS, 0); }
 		public MultDivModExprContext multDivModExpr() {
 			return getRuleContext(MultDivModExprContext.class,0);
 		}
 		public AddSubExpr_Context addSubExpr_() {
 			return getRuleContext(AddSubExpr_Context.class,0);
 		}
+		public TerminalNode MINUS() { return getToken(LogicPLParser.MINUS, 0); }
 		public AddSubExpr_Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2736,11 +2753,11 @@ public class LogicPLParser extends Parser {
 			setState(435);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__12:
+			case PLUS:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(424);
-				match(T__12);
+				match(PLUS);
 				setState(425);
 				multDivModExpr();
 				setState(426);
@@ -2748,11 +2765,11 @@ public class LogicPLParser extends Parser {
 				System.out.println("Operator: +");
 				}
 				break;
-			case T__3:
+			case MINUS:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(429);
-				match(T__3);
+				match(MINUS);
 				setState(430);
 				multDivModExpr();
 				setState(431);
@@ -2760,14 +2777,14 @@ public class LogicPLParser extends Parser {
 				System.out.println("Operator: -");
 				}
 				break;
-			case T__4:
-			case T__5:
-			case T__6:
-			case T__7:
-			case T__8:
-			case T__9:
-			case T__10:
-			case T__11:
+			case LOGICAL_OR:
+			case LOGICAL_AND:
+			case EQ:
+			case NOT_EQ:
+			case GT:
+			case LT:
+			case GT_EQ:
+			case LT_EQ:
 			case R_BRACKET:
 			case R_PAR:
 			case COMMA:
@@ -2856,12 +2873,15 @@ public class LogicPLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class MultDivModExpr_Context extends ParserRuleContext {
+		public TerminalNode STAR() { return getToken(LogicPLParser.STAR, 0); }
 		public UnaryExprContext unaryExpr() {
 			return getRuleContext(UnaryExprContext.class,0);
 		}
 		public MultDivModExpr_Context multDivModExpr_() {
 			return getRuleContext(MultDivModExpr_Context.class,0);
 		}
+		public TerminalNode DIV() { return getToken(LogicPLParser.DIV, 0); }
+		public TerminalNode MOD() { return getToken(LogicPLParser.MOD, 0); }
 		public MultDivModExpr_Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2888,11 +2908,11 @@ public class LogicPLParser extends Parser {
 			setState(459);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__13:
+			case STAR:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(443);
-				match(T__13);
+				match(STAR);
 				setState(444);
 				unaryExpr();
 				setState(445);
@@ -2900,11 +2920,11 @@ public class LogicPLParser extends Parser {
 				System.out.println("Operator: *");
 				}
 				break;
-			case T__14:
+			case DIV:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(448);
-				match(T__14);
+				match(DIV);
 				setState(449);
 				unaryExpr();
 				setState(450);
@@ -2912,11 +2932,11 @@ public class LogicPLParser extends Parser {
 				System.out.println("Operator: /");
 				}
 				break;
-			case T__15:
+			case MOD:
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(453);
-				match(T__15);
+				match(MOD);
 				setState(454);
 				unaryExpr();
 				setState(455);
@@ -2924,16 +2944,16 @@ public class LogicPLParser extends Parser {
 				System.out.println("Operator: %");
 				}
 				break;
-			case T__3:
-			case T__4:
-			case T__5:
-			case T__6:
-			case T__7:
-			case T__8:
-			case T__9:
-			case T__10:
-			case T__11:
-			case T__12:
+			case LOGICAL_OR:
+			case LOGICAL_AND:
+			case EQ:
+			case NOT_EQ:
+			case GT:
+			case LT:
+			case GT_EQ:
+			case LT_EQ:
+			case PLUS:
+			case MINUS:
 			case R_BRACKET:
 			case R_PAR:
 			case COMMA:
@@ -2959,9 +2979,12 @@ public class LogicPLParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class UnaryExprContext extends ParserRuleContext {
+		public TerminalNode PLUS() { return getToken(LogicPLParser.PLUS, 0); }
 		public UnaryExprContext unaryExpr() {
 			return getRuleContext(UnaryExprContext.class,0);
 		}
+		public TerminalNode MINUS() { return getToken(LogicPLParser.MINUS, 0); }
+		public TerminalNode LOGICAL_NOT() { return getToken(LogicPLParser.LOGICAL_NOT, 0); }
 		public ArrayAccessExprContext arrayAccessExpr() {
 			return getRuleContext(ArrayAccessExprContext.class,0);
 		}
@@ -2995,7 +3018,7 @@ public class LogicPLParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(461);
-				match(T__12);
+				match(PLUS);
 				setState(462);
 				unaryExpr();
 				System.out.println("Operator: +");
@@ -3005,7 +3028,7 @@ public class LogicPLParser extends Parser {
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(465);
-				match(T__3);
+				match(MINUS);
 				setState(466);
 				unaryExpr();
 				System.out.println("Operator: -");
@@ -3015,7 +3038,7 @@ public class LogicPLParser extends Parser {
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(469);
-				match(T__16);
+				match(LOGICAL_NOT);
 				setState(470);
 				unaryExpr();
 				System.out.println("Operator: !");
@@ -3315,7 +3338,7 @@ public class LogicPLParser extends Parser {
 		"\u0001\'\u0001\'\u0001\'\u0001\'\u0001\'\u0001\'\u0001\'\u0001\'\u0001"+
 		"\'\u0003\'\u01f1\b\'\u0001\'\u0000\u0000(\u0000\u0002\u0004\u0006\b\n"+
 		"\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e \"$&(*,.0246"+
-		"8:<>@BDFHJLN\u0000\u0002\u0001\u0000\u0012\u0014\u0001\u0000#%\u020b\u0000"+
+		"8:<>@BDFHJLN\u0000\u0002\u0001\u0000\u0013\u0015\u0001\u0000#%\u020b\u0000"+
 		"W\u0001\u0000\u0000\u0000\u0002Y\u0001\u0000\u0000\u0000\u0004b\u0001"+
 		"\u0000\u0000\u0000\u0006\u0088\u0001\u0000\u0000\u0000\b\u0091\u0001\u0000"+
 		"\u0000\u0000\n\u009e\u0001\u0000\u0000\u0000\f\u00a0\u0001\u0000\u0000"+
@@ -3337,7 +3360,7 @@ public class LogicPLParser extends Parser {
 		"\u0000\uffff\uffff\u0000QR\u0003\u0002\u0001\u0000RS\u0005\u0000\u0000"+
 		"\u0001SX\u0001\u0000\u0000\u0000TU\u0003$\u0012\u0000UV\u0003\u0000\u0000"+
 		"\u0000VX\u0001\u0000\u0000\u0000WP\u0001\u0000\u0000\u0000WT\u0001\u0000"+
-		"\u0000\u0000X\u0001\u0001\u0000\u0000\u0000YZ\u0005\u0016\u0000\u0000"+
+		"\u0000\u0000X\u0001\u0001\u0000\u0000\u0000YZ\u0005\u0017\u0000\u0000"+
 		"Z[\u0005\u001d\u0000\u0000[\\\u0003\u0004\u0002\u0000\\]\u0005\u001e\u0000"+
 		"\u0000]\u0003\u0001\u0000\u0000\u0000^c\u0003\u0006\u0003\u0000_`\u0003"+
 		"\u0006\u0003\u0000`a\u0003\u0004\u0002\u0000ac\u0001\u0000\u0000\u0000"+
@@ -3362,22 +3385,22 @@ public class LogicPLParser extends Parser {
 		"\u0000\u0000\u0088|\u0001\u0000\u0000\u0000\u0088\u007f\u0001\u0000\u0000"+
 		"\u0000\u0088\u0082\u0001\u0000\u0000\u0000\u0088\u0084\u0001\u0000\u0000"+
 		"\u0000\u0088\u0085\u0001\u0000\u0000\u0000\u0089\u0007\u0001\u0000\u0000"+
-		"\u0000\u008a\u008b\u0005&\u0000\u0000\u008b\u008c\u0005\u001a\u0000\u0000"+
+		"\u0000\u008a\u008b\u0005&\u0000\u0000\u008b\u008c\u0005\u0012\u0000\u0000"+
 		"\u008c\u0092\u00030\u0018\u0000\u008d\u008e\u0003.\u0017\u0000\u008e\u008f"+
-		"\u0005\u001a\u0000\u0000\u008f\u0090\u00030\u0018\u0000\u0090\u0092\u0001"+
+		"\u0005\u0012\u0000\u0000\u008f\u0090\u00030\u0018\u0000\u0090\u0092\u0001"+
 		"\u0000\u0000\u0000\u0091\u008a\u0001\u0000\u0000\u0000\u0091\u008d\u0001"+
-		"\u0000\u0000\u0000\u0092\t\u0001\u0000\u0000\u0000\u0093\u0094\u0005\u0019"+
+		"\u0000\u0000\u0000\u0092\t\u0001\u0000\u0000\u0000\u0093\u0094\u0005\u001a"+
 		"\u0000\u0000\u0094\u009a\u0006\u0005\uffff\uffff\u0000\u0095\u009b\u0005"+
 		"#\u0000\u0000\u0096\u009b\u0005$\u0000\u0000\u0097\u009b\u0005%\u0000"+
 		"\u0000\u0098\u009b\u0005&\u0000\u0000\u0099\u009b\u0003,\u0016\u0000\u009a"+
 		"\u0095\u0001\u0000\u0000\u0000\u009a\u0096\u0001\u0000\u0000\u0000\u009a"+
 		"\u0097\u0001\u0000\u0000\u0000\u009a\u0098\u0001\u0000\u0000\u0000\u009a"+
 		"\u0099\u0001\u0000\u0000\u0000\u009b\u009f\u0001\u0000\u0000\u0000\u009c"+
-		"\u009d\u0005\u0019\u0000\u0000\u009d\u009f\u0006\u0005\uffff\uffff\u0000"+
+		"\u009d\u0005\u001a\u0000\u0000\u009d\u009f\u0006\u0005\uffff\uffff\u0000"+
 		"\u009e\u0093\u0001\u0000\u0000\u0000\u009e\u009c\u0001\u0000\u0000\u0000"+
 		"\u009f\u000b\u0001\u0000\u0000\u0000\u00a0\u00a1\u0007\u0000\u0000\u0000"+
 		"\u00a1\u00a2\u0005&\u0000\u0000\u00a2\u00a3\u0006\u0006\uffff\uffff\u0000"+
-		"\u00a3\u00a4\u0005\u001a\u0000\u0000\u00a4\u00a5\u00030\u0018\u0000\u00a5"+
+		"\u00a3\u00a4\u0005\u0012\u0000\u0000\u00a4\u00a5\u00030\u0018\u0000\u00a5"+
 		"\r\u0001\u0000\u0000\u0000\u00a6\u00a7\u0007\u0000\u0000\u0000\u00a7\u00a8"+
 		"\u0005&\u0000\u0000\u00a8\u00a9\u0006\u0007\uffff\uffff\u0000\u00a9\u000f"+
 		"\u0001\u0000\u0000\u0000\u00aa\u00ab\u0007\u0000\u0000\u0000\u00ab\u00ac"+
@@ -3386,7 +3409,7 @@ public class LogicPLParser extends Parser {
 		"\uffff\uffff\u0000\u00b0\u0011\u0001\u0000\u0000\u0000\u00b1\u00b2\u0007"+
 		"\u0000\u0000\u0000\u00b2\u00b3\u0005\u001b\u0000\u0000\u00b3\u00b4\u0005"+
 		"#\u0000\u0000\u00b4\u00b5\u0005\u001c\u0000\u0000\u00b5\u00b6\u0005&\u0000"+
-		"\u0000\u00b6\u00b7\u0006\t\uffff\uffff\u0000\u00b7\u00b8\u0005\u001a\u0000"+
+		"\u0000\u00b6\u00b7\u0006\t\uffff\uffff\u0000\u00b7\u00b8\u0005\u0012\u0000"+
 		"\u0000\u00b8\u00b9\u0005\u001b\u0000\u0000\u00b9\u00ba\u0003\u0014\n\u0000"+
 		"\u00ba\u00bb\u0005\u001c\u0000\u0000\u00bb\u0013\u0001\u0000\u0000\u0000"+
 		"\u00bc\u00c1\u0005#\u0000\u0000\u00bd\u00c1\u0005$\u0000\u0000\u00be\u00c1"+
@@ -3399,12 +3422,12 @@ public class LogicPLParser extends Parser {
 		"\u0001\u0000\u0000\u0000\u00c6\u00c5\u0001\u0000\u0000\u0000\u00c7\u00c8"+
 		"\u0001\u0000\u0000\u0000\u00c8\u00c9\u0005!\u0000\u0000\u00c9\u00cb\u0003"+
 		"\u0014\n\u0000\u00ca\u00c0\u0001\u0000\u0000\u0000\u00ca\u00c6\u0001\u0000"+
-		"\u0000\u0000\u00cb\u0015\u0001\u0000\u0000\u0000\u00cc\u00cd\u0005\u0017"+
+		"\u0000\u0000\u00cb\u0015\u0001\u0000\u0000\u0000\u00cc\u00cd\u0005\u0018"+
 		"\u0000\u0000\u00cd\u00ce\u0005\u001f\u0000\u0000\u00ce\u00cf\u0005&\u0000"+
-		"\u0000\u00cf\u00db\u0005 \u0000\u0000\u00d0\u00d1\u0005\u0017\u0000\u0000"+
+		"\u0000\u00cf\u00db\u0005 \u0000\u0000\u00d0\u00d1\u0005\u0018\u0000\u0000"+
 		"\u00d1\u00d2\u0005\u001f\u0000\u0000\u00d2\u00d3\u0003 \u0010\u0000\u00d3"+
 		"\u00d4\u0005 \u0000\u0000\u00d4\u00db\u0001\u0000\u0000\u0000\u00d5\u00d6"+
-		"\u0005\u0017\u0000\u0000\u00d6\u00d7\u0005\u001f\u0000\u0000\u00d7\u00d8"+
+		"\u0005\u0018\u0000\u0000\u00d6\u00d7\u0005\u001f\u0000\u0000\u00d7\u00d8"+
 		"\u0003\u001e\u000f\u0000\u00d8\u00d9\u0005 \u0000\u0000\u00d9\u00db\u0001"+
 		"\u0000\u0000\u0000\u00da\u00cc\u0001\u0000\u0000\u0000\u00da\u00d0\u0001"+
 		"\u0000\u0000\u0000\u00da\u00d5\u0001\u0000\u0000\u0000\u00db\u0017\u0001"+
@@ -3426,25 +3449,25 @@ public class LogicPLParser extends Parser {
 		"\u00fa\u00fb\u0006\u0010\uffff\uffff\u0000\u00fb\u00fc\u0005\u001f\u0000"+
 		"\u0000\u00fc\u00fd\u0005\u0002\u0000\u0000\u00fd\u00fe\u0005 \u0000\u0000"+
 		"\u00fe\u00ff\u0005\u001c\u0000\u0000\u00ff!\u0001\u0000\u0000\u0000\u0100"+
-		"\u0101\u0005\u0018\u0000\u0000\u0101\u0102\u0006\u0011\uffff\uffff\u0000"+
+		"\u0101\u0005\u0019\u0000\u0000\u0101\u0102\u0006\u0011\uffff\uffff\u0000"+
 		"\u0102\u0103\u0005\u001f\u0000\u0000\u0103\u0104\u0005&\u0000\u0000\u0104"+
 		"\u0105\u0005\u0003\u0000\u0000\u0105\u0106\u0005&\u0000\u0000\u0106\u0107"+
 		"\u0005 \u0000\u0000\u0107\u0108\u0005\u001d\u0000\u0000\u0108\u0115\u0005"+
-		"\u001e\u0000\u0000\u0109\u010a\u0005\u0018\u0000\u0000\u010a\u010b\u0006"+
+		"\u001e\u0000\u0000\u0109\u010a\u0005\u0019\u0000\u0000\u010a\u010b\u0006"+
 		"\u0011\uffff\uffff\u0000\u010b\u010c\u0005\u001f\u0000\u0000\u010c\u010d"+
 		"\u0005&\u0000\u0000\u010d\u010e\u0005\u0003\u0000\u0000\u010e\u010f\u0005"+
 		"&\u0000\u0000\u010f\u0110\u0005 \u0000\u0000\u0110\u0111\u0005\u001d\u0000"+
 		"\u0000\u0111\u0112\u0003\u0004\u0002\u0000\u0112\u0113\u0005\u001e\u0000"+
 		"\u0000\u0113\u0115\u0001\u0000\u0000\u0000\u0114\u0100\u0001\u0000\u0000"+
 		"\u0000\u0114\u0109\u0001\u0000\u0000\u0000\u0115#\u0001\u0000\u0000\u0000"+
-		"\u0116\u0117\u0005\u0015\u0000\u0000\u0117\u0118\u0006\u0012\uffff\uffff"+
+		"\u0116\u0117\u0005\u0016\u0000\u0000\u0117\u0118\u0006\u0012\uffff\uffff"+
 		"\u0000\u0118\u0119\u0005&\u0000\u0000\u0119\u011a\u0006\u0012\uffff\uffff"+
 		"\u0000\u011a\u011b\u0005\u001f\u0000\u0000\u011b\u011c\u0006\u0012\uffff"+
 		"\uffff\u0000\u011c\u011d\u0003&\u0013\u0000\u011d\u011e\u0005 \u0000\u0000"+
 		"\u011e\u011f\u0005\u0003\u0000\u0000\u011f\u0120\u0007\u0000\u0000\u0000"+
 		"\u0120\u0121\u0005\u001d\u0000\u0000\u0121\u0122\u0003\u0004\u0002\u0000"+
 		"\u0122\u0123\u0005\u001e\u0000\u0000\u0123\u0131\u0001\u0000\u0000\u0000"+
-		"\u0124\u0125\u0005\u0015\u0000\u0000\u0125\u0126\u0006\u0012\uffff\uffff"+
+		"\u0124\u0125\u0005\u0016\u0000\u0000\u0125\u0126\u0006\u0012\uffff\uffff"+
 		"\u0000\u0126\u0127\u0005&\u0000\u0000\u0127\u0128\u0006\u0012\uffff\uffff"+
 		"\u0000\u0128\u0129\u0005\u001f\u0000\u0000\u0129\u012a\u0005 \u0000\u0000"+
 		"\u012a\u012b\u0005\u0003\u0000\u0000\u012b\u012c\u0007\u0000\u0000\u0000"+
@@ -3470,53 +3493,53 @@ public class LogicPLParser extends Parser {
 		"\u0000\u0151\u0145\u0001\u0000\u0000\u0000\u0151\u0148\u0001\u0000\u0000"+
 		"\u0000\u0151\u0149\u0001\u0000\u0000\u0000\u0151\u014c\u0001\u0000\u0000"+
 		"\u0000\u0151\u014d\u0001\u0000\u0000\u0000\u0152+\u0001\u0000\u0000\u0000"+
-		"\u0153\u0154\u0005\u0004\u0000\u0000\u0154\u0155\u0005#\u0000\u0000\u0155"+
-		"\u015a\u0006\u0016\uffff\uffff\u0000\u0156\u0157\u0005\u0004\u0000\u0000"+
-		"\u0157\u0158\u0005$\u0000\u0000\u0158\u015a\u0006\u0016\uffff\uffff\u0000"+
-		"\u0159\u0153\u0001\u0000\u0000\u0000\u0159\u0156\u0001\u0000\u0000\u0000"+
-		"\u015a-\u0001\u0000\u0000\u0000\u015b\u015c\u0005&\u0000\u0000\u015c\u015d"+
-		"\u0005\u001b\u0000\u0000\u015d\u015e\u00030\u0018\u0000\u015e\u015f\u0005"+
-		"\u001c\u0000\u0000\u015f/\u0001\u0000\u0000\u0000\u0160\u0161\u00032\u0019"+
-		"\u0000\u01611\u0001\u0000\u0000\u0000\u0162\u0163\u00036\u001b\u0000\u0163"+
-		"\u0164\u00034\u001a\u0000\u01643\u0001\u0000\u0000\u0000\u0165\u0166\u0005"+
-		"\u0005\u0000\u0000\u0166\u0167\u00036\u001b\u0000\u0167\u0168\u00034\u001a"+
-		"\u0000\u0168\u0169\u0006\u001a\uffff\uffff\u0000\u0169\u016c\u0001\u0000"+
-		"\u0000\u0000\u016a\u016c\u0001\u0000\u0000\u0000\u016b\u0165\u0001\u0000"+
-		"\u0000\u0000\u016b\u016a\u0001\u0000\u0000\u0000\u016c5\u0001\u0000\u0000"+
-		"\u0000\u016d\u016e\u0003:\u001d\u0000\u016e\u016f\u00038\u001c\u0000\u016f"+
-		"7\u0001\u0000\u0000\u0000\u0170\u0171\u0005\u0006\u0000\u0000\u0171\u0172"+
+		"\u0153\u0154\u0005\r\u0000\u0000\u0154\u0155\u0005#\u0000\u0000\u0155"+
+		"\u015a\u0006\u0016\uffff\uffff\u0000\u0156\u0157\u0005\r\u0000\u0000\u0157"+
+		"\u0158\u0005$\u0000\u0000\u0158\u015a\u0006\u0016\uffff\uffff\u0000\u0159"+
+		"\u0153\u0001\u0000\u0000\u0000\u0159\u0156\u0001\u0000\u0000\u0000\u015a"+
+		"-\u0001\u0000\u0000\u0000\u015b\u015c\u0005&\u0000\u0000\u015c\u015d\u0005"+
+		"\u001b\u0000\u0000\u015d\u015e\u00030\u0018\u0000\u015e\u015f\u0005\u001c"+
+		"\u0000\u0000\u015f/\u0001\u0000\u0000\u0000\u0160\u0161\u00032\u0019\u0000"+
+		"\u01611\u0001\u0000\u0000\u0000\u0162\u0163\u00036\u001b\u0000\u0163\u0164"+
+		"\u00034\u001a\u0000\u01643\u0001\u0000\u0000\u0000\u0165\u0166\u0005\u0004"+
+		"\u0000\u0000\u0166\u0167\u00036\u001b\u0000\u0167\u0168\u00034\u001a\u0000"+
+		"\u0168\u0169\u0006\u001a\uffff\uffff\u0000\u0169\u016c\u0001\u0000\u0000"+
+		"\u0000\u016a\u016c\u0001\u0000\u0000\u0000\u016b\u0165\u0001\u0000\u0000"+
+		"\u0000\u016b\u016a\u0001\u0000\u0000\u0000\u016c5\u0001\u0000\u0000\u0000"+
+		"\u016d\u016e\u0003:\u001d\u0000\u016e\u016f\u00038\u001c\u0000\u016f7"+
+		"\u0001\u0000\u0000\u0000\u0170\u0171\u0005\u0005\u0000\u0000\u0171\u0172"+
 		"\u0003:\u001d\u0000\u0172\u0173\u00038\u001c\u0000\u0173\u0174\u0006\u001c"+
 		"\uffff\uffff\u0000\u0174\u0177\u0001\u0000\u0000\u0000\u0175\u0177\u0001"+
 		"\u0000\u0000\u0000\u0176\u0170\u0001\u0000\u0000\u0000\u0176\u0175\u0001"+
 		"\u0000\u0000\u0000\u01779\u0001\u0000\u0000\u0000\u0178\u0179\u0003>\u001f"+
 		"\u0000\u0179\u017a\u0003<\u001e\u0000\u017a;\u0001\u0000\u0000\u0000\u017b"+
-		"\u017c\u0005\u0007\u0000\u0000\u017c\u017d\u0003>\u001f\u0000\u017d\u017e"+
+		"\u017c\u0005\u0006\u0000\u0000\u017c\u017d\u0003>\u001f\u0000\u017d\u017e"+
 		"\u0003<\u001e\u0000\u017e\u017f\u0006\u001e\uffff\uffff\u0000\u017f\u0187"+
-		"\u0001\u0000\u0000\u0000\u0180\u0181\u0005\b\u0000\u0000\u0181\u0182\u0003"+
-		">\u001f\u0000\u0182\u0183\u0003<\u001e\u0000\u0183\u0184\u0006\u001e\uffff"+
-		"\uffff\u0000\u0184\u0187\u0001\u0000\u0000\u0000\u0185\u0187\u0001\u0000"+
-		"\u0000\u0000\u0186\u017b\u0001\u0000\u0000\u0000\u0186\u0180\u0001\u0000"+
-		"\u0000\u0000\u0186\u0185\u0001\u0000\u0000\u0000\u0187=\u0001\u0000\u0000"+
-		"\u0000\u0188\u0189\u0003B!\u0000\u0189\u018a\u0003@ \u0000\u018a?\u0001"+
-		"\u0000\u0000\u0000\u018b\u018c\u0005\t\u0000\u0000\u018c\u018d\u0003B"+
-		"!\u0000\u018d\u018e\u0003@ \u0000\u018e\u018f\u0006 \uffff\uffff\u0000"+
-		"\u018f\u01a1\u0001\u0000\u0000\u0000\u0190\u0191\u0005\n\u0000\u0000\u0191"+
-		"\u0192\u0003B!\u0000\u0192\u0193\u0003@ \u0000\u0193\u0194\u0006 \uffff"+
-		"\uffff\u0000\u0194\u01a1\u0001\u0000\u0000\u0000\u0195\u0196\u0005\u000b"+
-		"\u0000\u0000\u0196\u0197\u0003B!\u0000\u0197\u0198\u0003@ \u0000\u0198"+
-		"\u0199\u0006 \uffff\uffff\u0000\u0199\u01a1\u0001\u0000\u0000\u0000\u019a"+
-		"\u019b\u0005\f\u0000\u0000\u019b\u019c\u0003B!\u0000\u019c\u019d\u0003"+
-		"@ \u0000\u019d\u019e\u0006 \uffff\uffff\u0000\u019e\u01a1\u0001\u0000"+
-		"\u0000\u0000\u019f\u01a1\u0001\u0000\u0000\u0000\u01a0\u018b\u0001\u0000"+
-		"\u0000\u0000\u01a0\u0190\u0001\u0000\u0000\u0000\u01a0\u0195\u0001\u0000"+
-		"\u0000\u0000\u01a0\u019a\u0001\u0000\u0000\u0000\u01a0\u019f\u0001\u0000"+
-		"\u0000\u0000\u01a1A\u0001\u0000\u0000\u0000\u01a2\u01a3\u0003F#\u0000"+
-		"\u01a3\u01a4\u0003D\"\u0000\u01a4\u01a7\u0001\u0000\u0000\u0000\u01a5"+
-		"\u01a7\u0003F#\u0000\u01a6\u01a2\u0001\u0000\u0000\u0000\u01a6\u01a5\u0001"+
-		"\u0000\u0000\u0000\u01a7C\u0001\u0000\u0000\u0000\u01a8\u01a9\u0005\r"+
-		"\u0000\u0000\u01a9\u01aa\u0003F#\u0000\u01aa\u01ab\u0003D\"\u0000\u01ab"+
+		"\u0001\u0000\u0000\u0000\u0180\u0181\u0005\u0007\u0000\u0000\u0181\u0182"+
+		"\u0003>\u001f\u0000\u0182\u0183\u0003<\u001e\u0000\u0183\u0184\u0006\u001e"+
+		"\uffff\uffff\u0000\u0184\u0187\u0001\u0000\u0000\u0000\u0185\u0187\u0001"+
+		"\u0000\u0000\u0000\u0186\u017b\u0001\u0000\u0000\u0000\u0186\u0180\u0001"+
+		"\u0000\u0000\u0000\u0186\u0185\u0001\u0000\u0000\u0000\u0187=\u0001\u0000"+
+		"\u0000\u0000\u0188\u0189\u0003B!\u0000\u0189\u018a\u0003@ \u0000\u018a"+
+		"?\u0001\u0000\u0000\u0000\u018b\u018c\u0005\t\u0000\u0000\u018c\u018d"+
+		"\u0003B!\u0000\u018d\u018e\u0003@ \u0000\u018e\u018f\u0006 \uffff\uffff"+
+		"\u0000\u018f\u01a1\u0001\u0000\u0000\u0000\u0190\u0191\u0005\b\u0000\u0000"+
+		"\u0191\u0192\u0003B!\u0000\u0192\u0193\u0003@ \u0000\u0193\u0194\u0006"+
+		" \uffff\uffff\u0000\u0194\u01a1\u0001\u0000\u0000\u0000\u0195\u0196\u0005"+
+		"\u000b\u0000\u0000\u0196\u0197\u0003B!\u0000\u0197\u0198\u0003@ \u0000"+
+		"\u0198\u0199\u0006 \uffff\uffff\u0000\u0199\u01a1\u0001\u0000\u0000\u0000"+
+		"\u019a\u019b\u0005\n\u0000\u0000\u019b\u019c\u0003B!\u0000\u019c\u019d"+
+		"\u0003@ \u0000\u019d\u019e\u0006 \uffff\uffff\u0000\u019e\u01a1\u0001"+
+		"\u0000\u0000\u0000\u019f\u01a1\u0001\u0000\u0000\u0000\u01a0\u018b\u0001"+
+		"\u0000\u0000\u0000\u01a0\u0190\u0001\u0000\u0000\u0000\u01a0\u0195\u0001"+
+		"\u0000\u0000\u0000\u01a0\u019a\u0001\u0000\u0000\u0000\u01a0\u019f\u0001"+
+		"\u0000\u0000\u0000\u01a1A\u0001\u0000\u0000\u0000\u01a2\u01a3\u0003F#"+
+		"\u0000\u01a3\u01a4\u0003D\"\u0000\u01a4\u01a7\u0001\u0000\u0000\u0000"+
+		"\u01a5\u01a7\u0003F#\u0000\u01a6\u01a2\u0001\u0000\u0000\u0000\u01a6\u01a5"+
+		"\u0001\u0000\u0000\u0000\u01a7C\u0001\u0000\u0000\u0000\u01a8\u01a9\u0005"+
+		"\f\u0000\u0000\u01a9\u01aa\u0003F#\u0000\u01aa\u01ab\u0003D\"\u0000\u01ab"+
 		"\u01ac\u0006\"\uffff\uffff\u0000\u01ac\u01b4\u0001\u0000\u0000\u0000\u01ad"+
-		"\u01ae\u0005\u0004\u0000\u0000\u01ae\u01af\u0003F#\u0000\u01af\u01b0\u0003"+
+		"\u01ae\u0005\r\u0000\u0000\u01ae\u01af\u0003F#\u0000\u01af\u01b0\u0003"+
 		"D\"\u0000\u01b0\u01b1\u0006\"\uffff\uffff\u0000\u01b1\u01b4\u0001\u0000"+
 		"\u0000\u0000\u01b2\u01b4\u0001\u0000\u0000\u0000\u01b3\u01a8\u0001\u0000"+
 		"\u0000\u0000\u01b3\u01ad\u0001\u0000\u0000\u0000\u01b3\u01b2\u0001\u0000"+
@@ -3533,9 +3556,9 @@ public class LogicPLParser extends Parser {
 		"\u0001\u0000\u0000\u0000\u01ca\u01cc\u0001\u0000\u0000\u0000\u01cb\u01bb"+
 		"\u0001\u0000\u0000\u0000\u01cb\u01c0\u0001\u0000\u0000\u0000\u01cb\u01c5"+
 		"\u0001\u0000\u0000\u0000\u01cb\u01ca\u0001\u0000\u0000\u0000\u01ccI\u0001"+
-		"\u0000\u0000\u0000\u01cd\u01ce\u0005\r\u0000\u0000\u01ce\u01cf\u0003J"+
+		"\u0000\u0000\u0000\u01cd\u01ce\u0005\f\u0000\u0000\u01ce\u01cf\u0003J"+
 		"%\u0000\u01cf\u01d0\u0006%\uffff\uffff\u0000\u01d0\u01db\u0001\u0000\u0000"+
-		"\u0000\u01d1\u01d2\u0005\u0004\u0000\u0000\u01d2\u01d3\u0003J%\u0000\u01d3"+
+		"\u0000\u01d1\u01d2\u0005\r\u0000\u0000\u01d2\u01d3\u0003J%\u0000\u01d3"+
 		"\u01d4\u0006%\uffff\uffff\u0000\u01d4\u01db\u0001\u0000\u0000\u0000\u01d5"+
 		"\u01d6\u0005\u0011\u0000\u0000\u01d6\u01d7\u0003J%\u0000\u01d7\u01d8\u0006"+
 		"%\uffff\uffff\u0000\u01d8\u01db\u0001\u0000\u0000\u0000\u01d9\u01db\u0003"+
