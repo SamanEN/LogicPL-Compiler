@@ -1,14 +1,14 @@
 grammar LogicPL;
 
 @header{
-import ast.node.*;
-import ast.node.expression.*;
-import ast.node.statement.*;
-import ast.node.declaration.*;
-import ast.node.expression.values.*;
-import ast.node.expression.operators.*;
-import ast.type.primitiveType.*;
-import ast.type.*;
+    import ast.node.*;
+    import ast.node.expression.*;
+    import ast.node.statement.*;
+    import ast.node.declaration.*;
+    import ast.node.expression.values.*;
+    import ast.node.expression.operators.*;
+    import ast.type.primitiveType.*;
+    import ast.type.*;
 }
 
 program returns[Program p]:
@@ -18,22 +18,36 @@ program returns[Program p]:
     ;
 
 functionDec returns[FuncDeclaration functionDeclaration]:
-    {ArrayList<ArgDeclaration> args = new ArrayList<>();
-     ArrayList<Statement> statements = new ArrayList<>();}
+    {
+        ArrayList<ArgDeclaration> args = new ArrayList<>();
+        ArrayList<Statement> statements = new ArrayList<>();
+    }
     FUNCTION name = identifier
-    LPAR (arg1 = functionVarDec {args.add($arg1.argDeclaration);} (COMMA arg = functionVarDec {args.add($arg.argDeclaration);})*)? RPAR COLON returnType = type
+    LPAR (arg1 = functionVarDec {args.add($arg1.argDeclaration);}
+    (COMMA arg = functionVarDec {args.add($arg.argDeclaration);})*)?
+    RPAR COLON returnType = type
     LBRACE ((stmt = statement {statements.add($stmt.statementRet);})+) RBRACE
-    {$functionDeclaration = new FuncDeclaration($name.identifierRet, $returnType.typeRet, args, statements); $functionDeclaration.setLine($name.identifierRet.getLine());}
+    {
+        $functionDeclaration = new FuncDeclaration($name.identifierRet, $returnType.typeRet, args, statements);
+        $functionDeclaration.setLine($name.identifierRet.getLine());
+    }
     ;
 
 functionVarDec returns [ArgDeclaration argDeclaration]:
-    t = type arg_iden = identifier {$argDeclaration = new ArgDeclaration($arg_iden.identifierRet, $t.typeRet); $argDeclaration.setLine($arg_iden.identifierRet.getLine());}
+    t = type arg_iden = identifier
+    {
+        $argDeclaration = new ArgDeclaration($arg_iden.identifierRet, $t.typeRet);
+        $argDeclaration.setLine($arg_iden.identifierRet.getLine());
+    }
     ;
 
 mainBlock returns [MainDeclaration main]:
     {ArrayList<Statement> mainStmts = new ArrayList<>();}
     m = MAIN LBRACE (s = statement {mainStmts.add($s.statementRet);})+ RBRACE
-    {$main = new MainDeclaration(mainStmts); $main.setLine($m.getLine());}
+    {
+        $main = new MainDeclaration(mainStmts);
+        $main.setLine($m.getLine());
+    }
     ;
 
 statement:
