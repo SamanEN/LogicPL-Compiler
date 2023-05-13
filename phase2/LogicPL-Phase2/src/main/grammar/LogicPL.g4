@@ -103,16 +103,17 @@ arrayDeclaration returns[ArrayDecStmt arrayDeclarationRet]:
         $arrayDeclarationRet = new ArrayDecStmt($i.identifierRet, $t.typeRet, $INT_NUMBER.getText());
         $arrayDeclarationRet.setLine($i.getLine());
         if($a != null)
-            $arrayDeclarationRet.setInitialValue($a.arrayList);
+            $arrayDeclarationRet.setInitialValue($a.arrayInitialValueRet);
     }
     ;
 
-arrayInitialValue:
-    ASSIGN arrayList
+arrayInitialValue returns[ArrayList<Expression> arrayInitialValueRet]:
+    ASSIGN a = arrayList {$arrayInitialValueRet = $a.arrayListRet;}
     ;
 
-arrayList:
-    LBRACKET ( value | identifier ) (COMMA ( value | identifier ))* RBRACKET
+arrayList returns[ArrayList<Expression> arrayListRet]:
+    {ArrayList<Expression> arrayListRet = new ArrayList<>();}
+    LBRACKET ( v1 = value{arrayListRet.add($v1.valueRet)} | i1 = identifier{arrayListRet.add($i1.identifierRet)} ) (COMMA ( v2 = value{arrayListRet.add($v2.valueRet)} | i2 = identifier{arrayListRet.add($i2.identifierRet)} ))* RBRACKET
     ;
 
 printSmt returns[PrintStmt printSmtRet]:
@@ -123,22 +124,31 @@ printSmt returns[PrintStmt printSmtRet]:
     }
     ;
 
-printExpr:
-    variable
-    | query
+printExpr returns[Expression printExprRet]:
+    v = variable {$printExprRet = $v.variableRet}
+    | q = query {$printExprRet = $q.queryRet;}
     ;
 
-query:
-      queryType1
-     | queryType2
+query returns[QueryExpression queryRet]:
+      q1 = queryType1 {$queryRet = $q1.queryType1Ret;}
+     | q2 = queryType2 {$queryRet = $q2.queryType2Ret;}
     ;
 
-queryType1:
-    LBRACKET QUARYMARK predicateIdentifier LPAR variable RPAR RBRACKET
+queryType1 returns[QueryExpression queryType1Ret]:
+    LBRACKET line = QUARYMARK p = predicateIdentifier LPAR v = variable RPAR RBRACKET
+    {
+        $queryType1Ret = new QueryExpression($p.predicateIdentifierRet);
+        $queryType1Ret.setVar($v.variableRet);
+        $queryType1Ret.setLine($line.getLine());
+    }
     ;
 
-queryType2:
-    LBRACKET predicateIdentifier LPAR QUARYMARK RPAR RBRACKET
+queryType2 returns[QueryExpression queryType2Ret]:
+    LBRACKET p = predicateIdentifier LPAR line = QUARYMARK RPAR RBRACKET
+    {
+        $queryType2Ret = new QueryExpression($p.predicateIdentifierRet);
+        $queryType2Ret.setLine($line.getLine());
+    }
     ;
 
 returnSmt returns[ReturnStmt returnSmtRet]:
@@ -179,17 +189,52 @@ implication returns[ImplicationStmt implicationRet]:
     }
     ;
 
-expression:
-    andExpr expression2
+expression returns[Expression expressionRet]:
+    a = andExpr e = expression2
+    {
+        if($e.expression2Ret != null)
+            {
+                $expressionRet = new BinaryExpression($a.andExprRet, $e.expression2Ret);
+                $expressionRet.setLine($a.getLine());
+            }
+        else
+            {
+                $expressionRet = $a.andExprRet;
+            }
+    }
+
     ;
 
-expression2:
-    OR andExpr expression2
+expression2 returns[Expression expression2Ret]:
+    OR a = andExpr e = expression2
+    {
+        if($e.expression2Ret != null)
+            {
+                $expression2Ret = new BinaryExpression($a.andExprRet, $e.expression2Ret);
+                $expression2Ret.setLine($a.getLine());
+            }
+        else
+            {
+                $expression2Ret = $a.andExprRet;
+            }
+    }
     |
+    {$expression2Ret = null;}
     ;
 
-andExpr:
-    eqExpr andExpr2
+andExpr returns[Expression andExprRet]:
+    e = eqExpr a = andExpr2
+    {
+        if($a.andExpr2Ret != null)
+            {
+                $andExprRet = new BinaryExpression($e.eqExprRet, $a.andExpr2Ret);
+                $andExprRet.setLine($e.getLine());
+            }
+        else
+            {
+                $andExprRet = $e.eqExprRet;
+            }
+    }
     ;
 
 andExpr2:
@@ -268,10 +313,10 @@ predicateIdentifier:
     PREDICATE_IDENTIFIER
     ;
 
-type:
-    BOOLEAN
-    | INT
-    | FLOAT
+type returns [Type typeRet]:
+    BOOLEAN {$typeRet = new BooleanType();}
+    | INT {$typeRet = new IntType();}
+    | FLOAT {$typeRet = new FloatType();}
     ;
 
 
