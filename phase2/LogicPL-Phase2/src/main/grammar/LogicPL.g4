@@ -50,32 +50,61 @@ mainBlock returns [MainDeclaration main]:
     }
     ;
 
-statement:
-    assignSmt | ( predicate SEMICOLON )
-    | implication | returnSmt
-    | printSmt | forLoop | localVarDeclaration
+statement returns[Statement statementRet]:
+    s1 = assignSmt {$statementRet = $s1.assignSmtRet;}
+    | ( s2 = predicate {$statementRet = $s2.predicateRet;} SEMICOLON )
+    | s3 = implication {$statementRet = $s3.implicationRet;}
+    | s4 = returnSmt {$statementRet = $s4.returnSmtRet;}
+    | s5 = printSmt {$statementRet = $s5.printSmtRet;}
+    | s6 = forLoop {$statementRet = $s6.forLoopRet;}
+    | s7 = localVarDeclaration {$statementRet = $s7.localVarDeclarationRet;}
     ;
 
-assignSmt:
-    variable ASSIGN expression SEMICOLON
+assignSmt[AssignStmt assignSmtRet]:
+    lvalue = variable line = ASSIGN rvalue = expression SEMICOLON
+    {
+        $assignSmtRet = new AssignStmt($lvalue.variableRet , $rvalue.expressionRet);
+        $assignSmtRet.setLine($line.getLine());
+    }
     ;
 
-variable:
-    identifier | identifier LBRACKET expression RBRACKET
+variable returns[Variable variableRet]:
+    i1 = identifier
+    {
+        $variableRet = new Variable($i1.identifierRet);
+        $variableRet.setLine($i1.identifierRet.getLine());
+    }
+    |  i2 = identifier LBRACKET e = expression RBRACKET
+    {
+        $variableRet = new ArrayAccess($i2.identifierRet.getName(), $e.expressionRet);
+        $variableRet.setLine($i2.identifierRet.getLine());
+    }
     ;
 
-localVarDeclaration:
-     varDeclaration
-    | arrayDeclaration
+localVarDeclaration returns[Statement localVarDeclarationRet]:
+     v = varDeclaration {$localVarDeclarationRet = $v.varDeclarationRet;}
+    | a = arrayDeclaration {$localVarDeclarationRet = $a.arrayDeclarationRet;}
     ;
 
-varDeclaration:
-    type identifier (ASSIGN expression )? SEMICOLON
+varDeclaration returns[VarDecStmt varDeclarationRet]:
+    t = type i = identifier (ASSIGN e = expression )? SEMICOLON
+    {
+        $varDeclarationRet = new VarDecStmt($i.identifierRet, $t.typeRet);
+        $varDeclarationRet.setLine($i.getLine());
+        if($e != null)
+            $varDeclarationRet.setInitialExpression($e.expressionRet);
+    }
     ;
 
-arrayDeclaration:
-    type LBRACKET INT_NUMBER RBRACKET identifier
-    (arrayInitialValue )? SEMICOLON
+arrayDeclaration returns[ArrayDecStmt arrayDeclarationRet]:
+    t = type LBRACKET INT_NUMBER RBRACKET i = identifier
+    (a = arrayInitialValue )? SEMICOLON
+    {
+        $arrayDeclarationRet = new ArrayDecStmt($i.identifierRet, $t.typeRet, $INT_NUMBER.getText());
+        $arrayDeclarationRet.setLine($i.getLine());
+        if($a != null)
+            $arrayDeclarationRet.setInitialValue($a.arrayList);
+    }
     ;
 
 arrayInitialValue:
@@ -86,8 +115,12 @@ arrayList:
     LBRACKET ( value | identifier ) (COMMA ( value | identifier ))* RBRACKET
     ;
 
-printSmt:
-    PRINT LPAR printExpr RPAR SEMICOLON
+printSmt returns[PrintStmt printSmtRet]:
+    PRINT LPAR p = printExpr RPAR SEMICOLON
+    {
+        $printSmtRet = new PrintStmt(p.printExprRet);
+        $printSmtRet.setLine($PRINT.getLine());
+    }
     ;
 
 printExpr:
@@ -108,21 +141,42 @@ queryType2:
     LBRACKET predicateIdentifier LPAR QUARYMARK RPAR RBRACKET
     ;
 
-returnSmt:
-    RETURN (value  | identifier)? SEMICOLON
+returnSmt returns[ReturnStmt returnSmtRet]:
+    RETURN (v = value {$returnSmtRet = new ReturnStmt($v.valueRet);} | iden = identifier {$returnSmtRet = new ReturnStmt($iden.identifierRet);})? SEMICOLON 
+    {
+        if($returnSmtRet == null)
+            {
+                $returnSmtRet = new ReturnStmt(null);
+            }
+    }
+    {$returnSmtRet.setLine($RETURN.getLine());}
     ;
 
-forLoop:
-    FOR LPAR identifier COLON identifier RPAR
-    LBRACE ((statement)*) RBRACE
+forLoop returns[ForloopStmt forLoopRet]:
+    FOR LPAR i1 = identifier COLON i2 = identifier RPAR
+    {ArrayList<Statement> statements = new ArrayList<>();}
+    LBRACE ((s = statement {statements.add($s.statementRet);})+) RBRACE
+    {
+        $forLoopRet = new ForloopStmt($i1.identifierRet, $i2.identifierRet, statements);
+        $forLoopRet.setLine($FOR.getLine());
+    }
     ;
 
-predicate:
-    predicateIdentifier LPAR variable RPAR
+predicate returns[PredicateStmt predicateRet]:
+    p = predicateIdentifier LPAR v = variable RPAR
+    {
+        $predicateRet = new PredicateStmt($p.predicateIdentifierRet , $v.variableRet);
+        predicateRet.setLine($p.predicateIdentifierRet.getLine());
+    }
     ;
 
-implication:
-    LPAR expression RPAR ARROW LPAR ((statement)+) RPAR
+implication returns[ImplicationStmt implicationRet]:
+    {ArrayList<Statement> statements = new ArrayList<>();}
+    LPAR e = expression RPAR ARROW LPAR ((s = statement{statements.add($s.statementRet);})+) RPAR
+    {
+        $implicationRet = new ImplicationStmt($e.expressionRet, statements);
+        $implicationRet.setLine($e.getLine());
+    }
     ;
 
 expression:
