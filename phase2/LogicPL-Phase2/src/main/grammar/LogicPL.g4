@@ -90,8 +90,8 @@ varDeclaration returns[VarDecStmt varDeclarationRet]:
     t = type i = identifier (ASSIGN e = expression )? SEMICOLON
     {
         $varDeclarationRet = new VarDecStmt($i.identifierRet, $t.typeRet);
-        $varDeclarationRet.setLine($i.getLine());
-        if($e != null)
+        $varDeclarationRet.setLine($i.identifierRet.getLine());
+        if($e.expressionRet != null)
             $varDeclarationRet.setInitialExpression($e.expressionRet);
     }
     ;
@@ -101,8 +101,8 @@ arrayDeclaration returns[ArrayDecStmt arrayDeclarationRet]:
     (a = arrayInitialValue )? SEMICOLON
     {
         $arrayDeclarationRet = new ArrayDecStmt($i.identifierRet, $t.typeRet, $INT_NUMBER.getText());
-        $arrayDeclarationRet.setLine($i.getLine());
-        if($a != null)
+        $arrayDeclarationRet.setLine($i.identifierRet.getLine());
+        if($a.arrayInitialValueRet != null)
             $arrayDeclarationRet.setInitialValue($a.arrayInitialValueRet);
     }
     ;
@@ -185,7 +185,7 @@ implication returns[ImplicationStmt implicationRet]:
     LPAR e = expression RPAR ARROW LPAR ((s = statement{statements.add($s.statementRet);})+) RPAR
     {
         $implicationRet = new ImplicationStmt($e.expressionRet, statements);
-        $implicationRet.setLine($e.getLine());
+        $implicationRet.setLine($e.expressionRet.getLine());
     }
     ;
 
@@ -211,11 +211,11 @@ expression2 returns[BinaryExpression expression2Ret] locals[BinaryExpression tem
         {
             $temp = new BinaryExpression($left.andExprRet, $right.expression2Ret.getRight(), $right.expression2Ret.getBinaryOperator());
             $temp.setLine(right.expression2Ret.getLine());
-            BinaryExpression $expression2Ret = new BinaryExpression(null, $temp, BinaryOperator.or);
+            $expression2Ret = new BinaryExpression(null, $temp, BinaryOperator.or);
         }
         else
         {
-            BinaryExpression $expression2Ret = new BinaryExpression(null, $left.andExprRet, BinaryOperator.or);
+            $expression2Ret = new BinaryExpression(null, $left.andExprRet, BinaryOperator.or);
         }
     }
     |
@@ -244,11 +244,11 @@ andExpr2 returns[Expression andExpr2Ret] locals[BinaryExpression temp]:
         {
             $temp = new BinaryExpression($left.eqExprRet, $right.andExpr2Ret.getRight(), $right.andExpr2Ret.getBinaryOperator());
             $temp.setLine(right.andExpr2Ret.getLine());
-            BinaryExpression $andExpr2Ret = new BinaryExpression(null, $temp, BinaryOperator.or);
+            $andExpr2Ret = new BinaryExpression(null, $temp, BinaryOperator.or);
         }
         else
         {
-            BinaryExpression $andExpr2Ret = new BinaryExpression(null, $left.eqExprRet, BinaryOperator.or);
+            $andExpr2Ret = new BinaryExpression(null, $left.eqExprRet, BinaryOperator.or);
         }   
     }
     |
@@ -277,15 +277,15 @@ eqExpr2 returns[Expression eqExpr2Ret] locals[BinaryExpression temp, BinaryOpera
         {
             $temp = new BinaryExpression($left.compExprRet, $right.eqExpr2Ret.getRight(), $right.eqExpr2Ret.getBinaryOperator());
             $temp.setLine(right.eqExpr2Ret.getLine());
-            BinaryExpression $eqExpr2Ret = new BinaryExpression(null, $temp, $operator);
+            $eqExpr2Ret = new BinaryExpression(null, $temp, $operator);
         }
         else
         {
-            BinaryExpression $eqExpr2Ret = new BinaryExpression(null, $left.compExprRet, $operator);
+            $eqExpr2Ret = new BinaryExpression(null, $left.compExprRet, $operator);
         }   
     }   
     |
-    {$andExpr2Ret = null;}
+    {$eqExpr2Ret = null;}
     ;
 
 compExpr returns[Expression compExprRet]:
