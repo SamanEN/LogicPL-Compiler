@@ -191,7 +191,7 @@ implication returns[ImplicationStmt implicationRet]:
     LPAR e = expression RPAR ARROW LPAR ((s = statement{statements.add($s.statementRet);})+) RPAR
     {
         $implicationRet = new ImplicationStmt($e.expressionRet, statements);
-        $implicationRet.setLine($e.expressionRet.getLine());
+        $implicationRet.setLine($ARROW.getLine());
     }
     ;
 
@@ -224,6 +224,7 @@ expression2 returns[BinaryExpression expression2Ret] locals[BinaryExpression tem
             $expression2Ret = new BinaryExpression(null, $left.andExprRet, BinaryOperator.or);
         }
     }
+    {$expression2Ret.setLine($OR.getLine());}
     |
     {$expression2Ret = null;}
     ;
@@ -250,13 +251,14 @@ andExpr2 returns[BinaryExpression andExpr2Ret] locals[BinaryExpression temp]:
         {
             $temp = new BinaryExpression($left.eqExprRet, $right.andExpr2Ret.getRight(), $right.andExpr2Ret.getBinaryOperator());
             $temp.setLine($right.andExpr2Ret.getLine());
-            $andExpr2Ret = new BinaryExpression(null, $temp, BinaryOperator.or);
+            $andExpr2Ret = new BinaryExpression(null, $temp, BinaryOperator.and);
         }
         else
         {
-            $andExpr2Ret = new BinaryExpression(null, $left.eqExprRet, BinaryOperator.or);
+            $andExpr2Ret = new BinaryExpression(null, $left.eqExprRet, BinaryOperator.and);
         }   
     }
+    {$andExpr2Ret.setLine($AND.getLine());}
     |
     {$andExpr2Ret = null;}
     ;
@@ -290,7 +292,8 @@ eqExpr2 returns[BinaryExpression eqExpr2Ret] locals[BinaryExpression temp, Binar
         {
             $eqExpr2Ret = new BinaryExpression(null, $left.compExprRet, $operator);
         }   
-    }   
+    }
+    {$eqExpr2Ret.setLine($op.getLine());}
     |
     {$eqExpr2Ret = null;}
     ;
@@ -325,6 +328,7 @@ compExpr2 returns[BinaryExpression compExpr2Ret] locals[BinaryExpression temp, B
             $compExpr2Ret = new BinaryExpression(null, $left.additiveRet, $operator);
         }   
     }
+    {$compExpr2Ret.setLine($op.getLine());}
     |
     {$compExpr2Ret = null;}
     ;
@@ -359,6 +363,7 @@ additive2 returns[BinaryExpression additive2Ret] locals[BinaryExpression temp, B
             $additive2Ret = new BinaryExpression(null, $left.multicativeRet, $operator);
         }   
     }
+    {$additive2Ret.setLine($op.getLine());}
     |
     {$additive2Ret = null;}
     ;
@@ -393,6 +398,7 @@ multicative2 returns[BinaryExpression multicative2Ret] locals[BinaryExpression t
             $multicative2Ret = new BinaryExpression(null, $left.unaryRet, $operator);
         }   
     }
+    {$multicative2Ret.setLine($op.getLine());}
     |
     {$multicative2Ret = null;}
     ;
