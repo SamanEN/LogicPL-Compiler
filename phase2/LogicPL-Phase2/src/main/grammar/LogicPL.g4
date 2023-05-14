@@ -17,7 +17,7 @@ program returns[Program p]:
     main = mainBlock {$p.setMain($main.main) ;}
     ;
 
-functionDec returns[FuncDeclaration functionDeclaration]:
+functionDec returns [FuncDeclaration functionDeclaration]:
     {
         ArrayList<ArgDeclaration> args = new ArrayList<>();
         ArrayList<Statement> statements = new ArrayList<>();
@@ -50,7 +50,7 @@ mainBlock returns [MainDeclaration main]:
     }
     ;
 
-statement returns[Statement statementRet]:
+statement returns [Statement statementRet]:
     s1 = assignSmt {$statementRet = $s1.assignSmtRet;}
     | ( s2 = predicate {$statementRet = $s2.predicateRet;} SEMICOLON )
     | s3 = implication {$statementRet = $s3.implicationRet;}
@@ -60,7 +60,7 @@ statement returns[Statement statementRet]:
     | s7 = localVarDeclaration {$statementRet = $s7.localVarDeclarationRet;}
     ;
 
-assignSmt[AssignStmt assignSmtRet]:
+assignSmt returns [AssignStmt assignSmtRet]:
     lvalue = variable line = ASSIGN rvalue = expression SEMICOLON
     {
         $assignSmtRet = new AssignStmt($lvalue.variableRet , $rvalue.expressionRet);
@@ -68,7 +68,7 @@ assignSmt[AssignStmt assignSmtRet]:
     }
     ;
 
-variable returns[Variable variableRet]:
+variable returns [Variable variableRet]:
     i1 = identifier
     {
         $variableRet = new Variable($i1.identifierRet);
