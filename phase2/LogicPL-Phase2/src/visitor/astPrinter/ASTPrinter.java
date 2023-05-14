@@ -91,7 +91,8 @@ public class ASTPrinter extends Visitor<Void> {
     public Void visit(QueryExpression queryExpression) {
         messagePrinter(queryExpression.getLine(), queryExpression.toString());
         queryExpression.getPredicateName().accept(this);
-        queryExpression.getVar().accept(this);
+        if (queryExpression.getVar() != null)
+            queryExpression.getVar().accept(this);
         return null;
     }
 

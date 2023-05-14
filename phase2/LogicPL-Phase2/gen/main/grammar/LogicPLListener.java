@@ -1,14 +1,14 @@
-// Generated from /home/yektanet/Edu/TA/PLC/CA2V8/src/main/grammar/LogicPL.g4 by ANTLR 4.12.0
+// Generated from D:/Uni/Semester6/PLC/CA/LogicPL-Compiler/phase2/LogicPL-Phase2/src/main/grammar\LogicPL.g4 by ANTLR 4.12.0
 package main.grammar;
 
-import ast.node.*;
-import ast.node.expression.*;
-import ast.node.statement.*;
-import ast.node.declaration.*;
-import ast.node.expression.values.*;
-import ast.node.expression.operators.*;
-import ast.type.primitiveType.*;
-import ast.type.*;
+    import ast.node.*;
+    import ast.node.expression.*;
+    import ast.node.statement.*;
+    import ast.node.declaration.*;
+    import ast.node.expression.values.*;
+    import ast.node.expression.operators.*;
+    import ast.type.primitiveType.*;
+    import ast.type.*;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
