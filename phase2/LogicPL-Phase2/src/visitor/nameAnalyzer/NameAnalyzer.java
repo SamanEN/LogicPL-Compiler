@@ -42,11 +42,16 @@ public class NameAnalyzer extends Visitor<Void> {
         var functionSymbolTable = new SymbolTable(SymbolTable.top, funcDeclaration.getName().getName());
         functionItem.setFunctionSymbolTable(functionSymbolTable);
 
-        // ToDo
+        try {
+            SymbolTable.top.put(functionItem);
+        } catch (ItemAlreadyExistsException e) {
+            nameErrors.add(new FunctionRedefinition(funcDeclaration.getLine(), funcDeclaration.getName().getName()));
+        }
 
+        SymbolTable.push(functionSymbolTable);
 
         for (ArgDeclaration varDeclaration : funcDeclaration.getArgs()) {
-            varDeclaration.accept(this);
+                varDeclaration.accept(this);
         }
 
         for (var stmt : funcDeclaration.getStatements()) {
@@ -60,11 +65,28 @@ public class NameAnalyzer extends Visitor<Void> {
     }
 
     @Override
+    public Void visit(ArgDeclaration argDeclaration) {
+        var argItem = new VariableItem(argDeclaration.getIdentifier().getName(), argDeclaration.getType());
+
+        SymbolTable currentTable = SymbolTable.top;
+        try {
+            currentTable.put(argItem);
+        } catch (ItemAlreadyExistsException e) {
+            nameErrors.add(new VariableRedefinition(argDeclaration.getLine(), argDeclaration.getIdentifier().getName()));
+        }
+        return null;
+    }
+
+    @Override
     public Void visit(VarDecStmt varDeclaration) {
         var variableItem = new VariableItem(varDeclaration.getIdentifier().getName(), varDeclaration.getType());
 
-        // ToDo
-
+        SymbolTable currentTable = SymbolTable.top;
+        try {
+            currentTable.put(variableItem);
+        } catch (ItemAlreadyExistsException e) {
+            nameErrors.add(new VariableRedefinition(varDeclaration.getLine(), varDeclaration.getIdentifier().getName()));
+        }
         return null;
     }
 }
