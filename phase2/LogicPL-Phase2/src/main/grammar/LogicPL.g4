@@ -100,7 +100,7 @@ arrayDeclaration returns[ArrayDecStmt arrayDeclarationRet]:
     t = type LBRACKET INT_NUMBER RBRACKET i = identifier
     (a = arrayInitialValue )? SEMICOLON
     {
-        $arrayDeclarationRet = new ArrayDecStmt($i.identifierRet, $t.typeRet, $INT_NUMBER.getText());
+        $arrayDeclarationRet = new ArrayDecStmt($i.identifierRet, $t.typeRet, $INT_NUMBER.int);
         $arrayDeclarationRet.setLine($i.identifierRet.getLine());
         if($a.arrayInitialValueRet != null)
             $arrayDeclarationRet.setInitialValue($a.arrayInitialValueRet);
@@ -304,7 +304,7 @@ compExpr returns[Expression compExprRet]:
     ;
 
 compExpr2 returns[Expression compExpr2Ret] locals[BinaryExpression temp, BinaryOperator operator]:
-    ( op = LT {$operator = BinaryOperator.lt;} | oح = LTE {$operator = BinaryOperator.lte;} | op = GT {$operator = BinaryOperator.gt;} | op = GTE {$operator = BinaryOperator.gte;} ) left = additive right = compExpr2
+    ( op = LT {$operator = BinaryOperator.lt;} | op = LTE {$operator = BinaryOperator.lte;} | op = GT {$operator = BinaryOperator.gt;} | op = GTE {$operator = BinaryOperator.gte;} ) left = additive right = compExpr2
     {
         if($right.compExpr2Ret != null)
         {
