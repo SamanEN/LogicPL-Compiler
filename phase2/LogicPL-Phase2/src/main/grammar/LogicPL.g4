@@ -190,127 +190,248 @@ implication returns[ImplicationStmt implicationRet]:
     ;
 
 expression returns[Expression expressionRet]:
-    a = andExpr e = expression2
+    left = andExpr right = expression2
     {
-        if($e.expression2Ret != null)
+        if($right.expression2Ret != null)
             {
-                $expressionRet = new BinaryExpression($a.andExprRet, $e.expression2Ret);
-                $expressionRet.setLine($a.getLine());
+                $expressionRet = new BinaryExpression($left.andExprRet, $right.expression2Ret.getRight(), $right.expression2Ret.getBinaryOperator());
+                $expressionRet.setLine($right.expression2Ret.getLine());
             }
         else
             {
-                $expressionRet = $a.andExprRet;
+                $expressionRet = $left.andExprRet;
             }
     }
-
     ;
 
-expression2 returns[Expression expression2Ret]:
-    OR a = andExpr e = expression2
+expression2 returns[BinaryExpression expression2Ret] locals[BinaryExpression temp]:
+    OR left = andExpr right = expression2
     {
-        if($e.expression2Ret != null)
-            {
-                $expression2Ret = new BinaryExpression($a.andExprRet, $e.expression2Ret);
-                $expression2Ret.setLine($a.getLine());
-            }
+        if($right.expression2Ret != null)
+        {
+            $temp = new BinaryExpression($left.andExprRet, $right.expression2Ret.getRight(), $right.expression2Ret.getBinaryOperator());
+            $temp.setLine(right.expression2Ret.getLine());
+            BinaryExpression $expression2Ret = new BinaryExpression(null, $temp, BinaryOperator.or);
+        }
         else
-            {
-                $expression2Ret = $a.andExprRet;
-            }
+        {
+            BinaryExpression $expression2Ret = new BinaryExpression(null, $left.andExprRet, BinaryOperator.or);
+        }
     }
     |
     {$expression2Ret = null;}
     ;
 
 andExpr returns[Expression andExprRet]:
-    e = eqExpr a = andExpr2
+    left = eqExpr right = andExpr2
     {
-        if($a.andExpr2Ret != null)
+        if($right.andExpr2Ret != null)
             {
-                $andExprRet = new BinaryExpression($e.eqExprRet, $a.andExpr2Ret);
-                $andExprRet.setLine($e.getLine());
+                $andExprRet = new BinaryExpression($left.eqExprRet, $right.andExpr2Ret.getRight(), $right.andExpr2Ret.getBinaryOperator());
+                $andExprRet.setLine($right.andExpr2Ret.getLine());
             }
         else
             {
-                $andExprRet = $e.eqExprRet;
+                $andExprRet = $left.eqExprRet;
             }
     }
     ;
 
-andExpr2:
-    AND eqExpr andExpr2
+andExpr2 returns[Expression andExpr2Ret] locals[BinaryExpression temp]:
+    AND left = eqExpr right = andExpr2
+    {
+        if($right.andExpr2Ret != null)
+        {
+            $temp = new BinaryExpression($left.eqExprRet, $right.andExpr2Ret.getRight(), $right.andExpr2Ret.getBinaryOperator());
+            $temp.setLine(right.andExpr2Ret.getLine());
+            BinaryExpression $andExpr2Ret = new BinaryExpression(null, $temp, BinaryOperator.or);
+        }
+        else
+        {
+            BinaryExpression $andExpr2Ret = new BinaryExpression(null, $left.eqExprRet, BinaryOperator.or);
+        }   
+    }
     |
+    {$andExpr2Ret = null;}
     ;
 
-eqExpr:
-    compExpr eqExpr2
+eqExpr returns[Expression eqExprRet]:
+    left = compExpr right = eqExpr2
+    {
+        if(right.eqExpr2Ret != null)
+        {
+            $eqExprRet = new BinaryExpression($left.compExprRet, $right.eqExpr2Ret.getRight(), $right.eqExpr2Ret.getBinaryOperator());
+            $eqExprRet.setLine($right.eqExpr2Ret.getLine());
+        }
+        else
+        {
+            $eqExprRet = $left.compExprRet;
+        }
+    }
     ;
 
-eqExpr2:
-    ( EQ | NEQ ) compExpr eqExpr2
+eqExpr2 returns[Expression andExpr2Ret] locals[BinaryExpression temp, BinaryOperator operator]:
+    ( operator = EQ {$operator = BinaryOperator.eq;} | operator = NEQ {$operator = BinaryOperator.neq;} ) left = compExpr right = eqExpr2
+    {
+        if($right.eqExpr2Ret != null)
+        {
+            $temp = new BinaryExpression($left.compExprRet, $right.eqExpr2Ret.getRight(), $right.eqExpr2Ret.getBinaryOperator());
+            $temp.setLine(right.eqExpr2Ret.getLine());
+            BinaryExpression $eqExpr2Ret = new BinaryExpression(null, $temp, $operator);
+        }
+        else
+        {
+            BinaryExpression $eqExpr2Ret = new BinaryExpression(null, $left.compExprRet, $operator);
+        }   
+    }   
     |
+    {$andExpr2Ret = null;}
     ;
 
-compExpr:
-    additive compExpr2
+compExpr returns[Expression compExprRet]:
+    left = additive right = compExpr2
+    {
+        if($right.compExpr2Ret != null)
+        {
+            $compExprRet = new BinaryExpression($left.additiveRet, $right.compExpr2Ret.getRight(), $right.compExpr2Ret.getBinaryOperator());
+            $compExprRet.setLine($right.compExpr2Ret.getLine());
+        }
+        else
+        {
+            $compExprRet = $left.additiveRet;
+        }
+    }
     ;
 
-compExpr2:
-    ( LT | LTE | GT | GTE) additive compExpr2
+compExpr2 returns[Expression compExpr2Ret] locals[BinaryExpression temp, BinaryOperator operator]:
+    ( operator = LT {$operator = BinaryOperator.lt;} | operator = LTE {$operator = BinaryOperator.lte;} | operator = GT {$operator = BinaryOperator.gt;} | operator = GTE {$operator = BinaryOperator.gte;} ) left = additive right = compExpr2
+    {
+        if($right.compExpr2Ret != null)
+        {
+            $temp = new BinaryExpression($left.additiveRet, $right.compExpr2Ret.getRight(), $right.compExpr2Ret.getBinaryOperator());
+            $temp.setLine(right.compExpr2Ret.getLine());
+            BinaryExpression $compExpr2Ret = new BinaryExpression(null, $temp, $operator);
+        }
+        else
+        {
+            BinaryExpression $compExpr2Ret = new BinaryExpression(null, $left.additiveRet, $operator);
+        }   
+    }
     |
+    {$compExpr2Ret = null;}
     ;
 
-additive:
-    multicative additive2
+additive returns[Expression additiveRet]:
+    left = multicative right = additive2
+    {
+        if($right.additive2Ret != null)
+        {
+            $additiveRet = new BinaryExpression($left.multicativeRet, $right.additive2Ret.getRight(), $right.additive2Ret.getBinaryOperator());
+            $additiveRet.setLine($right.additive2Ret.getLine());
+        }
+        else
+        {
+            $additiveRet = $left.multicativeRet;
+        }
+    }
     ;
 
-additive2:
-    ( PLUS | MINUS ) multicative additive2
+additive2 returns[Expression additive2Ret] locals[BinaryExpression temp, BinaryOperator operator]:
+    ( operator = PLUS {$operator = BinaryOperator.add;} | operator = MINUS {$operator = BinaryOperator.sub;} ) left = multicative right = additive2
+    {
+        if($right.additive2Ret != null)
+        {
+            $temp = new BinaryExpression($left.multicativeRet, $right.additive2Ret.getRight(), $right.additive2Ret.getBinaryOperator());
+            $temp.setLine(right.additive2Ret.getLine());
+            BinaryExpression $additive2Ret = new BinaryExpression(null, $temp, $operator);
+        }
+        else
+        {
+            BinaryExpression $additive2Ret = new BinaryExpression(null, $left.multicativeRet, $operator);
+        }   
+    }
     |
+    {$additive2Ret = null;}
     ;
 
-multicative:
-    unary multicative2
+multicative returns[Expression multicativeRet]:
+    left = unary right = multicative2
+    {
+        if($right.multicative2Ret != null)
+        {
+            $multicativeRet = new BinaryExpression($left.unaryRet, $right.multicative2Ret.getRight(), $right.multicative2Ret.getBinaryOperator());
+            $multicativeRet.setLine($right.multicative2Ret.getLine());
+        }
+        else
+        {
+            $multicativeRet = $left.unaryRet;
+        }
+    }
     ;
 
-multicative2:
-    ( MULT | MOD | DIV ) unary multicative2
+multicative2 returns[Expression multicative2Ret] locals[BinaryExpression temp, BinaryOperator operator]:
+    ( operator = MULT {$operator = BinaryOperator.mult;} | operator = DIV {$operator = BinaryOperator.div;} | operator = MOD {$operator = BinaryOperator.mod;} ) left = unary right = multicative2
+    {
+        if($right.multicative2Ret != null)
+        {
+            $temp = new BinaryExpression($left.unaryRet, $right.multicative2Ret.getRight(), $right.multicative2Ret.getBinaryOperator());
+            $temp.setLine(right.multicative2Ret.getLine());
+            BinaryExpression $multicative2Ret = new BinaryExpression(null, $temp, $operator);
+        }
+        else
+        {
+            BinaryExpression $multicative2Ret = new BinaryExpression(null, $left.unaryRet, $operator);
+        }   
+    }
     |
+    {$multicative2Ret = null;}
     ;
 
-unary:
-    other
+unary returns[Expression unaryRet] locals[UnaryOperator operator]:
+    o = other {$unaryRet = $o.otherRet;}
     |
-     ( PLUS | MINUS | NOT ) other
+    ( op = PLUS {$operator = UnaryOperator.plus} | op = MINUS {$operator = UnaryOperator.minus} | op = NOT {$operator = UnaryOperator.not} ) o = other
+    {
+        $unaryRet = new UnaryExpression($operator, $o.otherRet);
+        $unaryRet.setLine($operator.getLine());
+    }
     ;
 
-other:
-    LPAR expression RPAR | variable | value
-    | queryType1 | functionCall
+other returns[Expression otherRet]:
+    LPAR expr = expression RPAR {$otherRet = $expr.expressionRet;}
+    | variable {$otherRet = $variable.variableRet;}
+    | value {$otherRet = $value.valueRet;}
+    | queryType1 {$otherRet = $queryType1.queryType1Ret;}  
+    | functionCall {$otherRet = $functionCall.functionCallRet;}
     ;
 
-functionCall:
-    identifier LPAR (expression (COMMA expression)*)? RPAR
+functionCall returns[FunctionCall functionCallRet]:
+    {ArrayList<Expression> arguments = new ArrayList<Expression>();}
+    iden = identifier LPAR (expr1 = expression {arguments.add($expr1.expressionRet);} (COMMA expr = expression {arguments.add(expr.expressionRet);})*)? RPAR
+    {
+        $functionCallRet = new FunctionCall( arguments, $iden.identifierRet);
+        $functionCallRet.setLine($iden.identifierRet.getLine());
+    }
     ;
 
-value:
-    numericValue
-    | TRUE
-    | FALSE
-    | MINUS numericValue
+value returns[Value valueRet]:
+    n1 = numericValue {$valueRet = $n1.numericValueRet;}
+    | TRUE {$valueRet = new BooleanValue(true); $valueRet.setLine($TRUE.getLine());}
+    | FALSE {$valueRet = new BooleanValue(false); $valueRet.setLine($FALSE.getLine());}
+    | MINUS n2 = numericValue {$n2.numericValueRet.negateConstant(); $valueRet = $n2.numericValueRet;}
     ;
 
-numericValue:
-    INT_NUMBER
-    | FLOAT_NUMBER
+numericValue returns[Value numericValueRet]:
+    i = INT_NUMBER {$numericValueRet = new IntValue($i.int); $numericValueRet.setLine($i.getLine());} 
+    | f = FLOAT_NUMBER {$numericValueRet = new FloatValue(Float.parseFloat($f.text)); $numericValueRet.setLine($f.getLine());}
     ;
 
-identifier:
-    IDENTIFIER
+identifier returns[Identifier identifierRet]:
+    iden = IDENTIFIER {$identifierRet = new Identifier($iden.text); $identifierRet.setLine($iden.getLine());}
     ;
 
-predicateIdentifier:
-    PREDICATE_IDENTIFIER
+predicateIdentifier returns[Identifier predicateIdentifierRet]:
+    piden = PREDICATE_IDENTIFIER {$predicateIdentifierRet = new Identifier($piden.text); $predicateIdentifierRet.setLine($piden.getLine());}
     ;
 
 type returns [Type typeRet]:
