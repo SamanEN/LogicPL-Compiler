@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="760a614d-54aa-43e5-8278-c451c23339a2" name="Changes" comment="" />
+    <list default="true" id="760a614d-54aa-43e5-8278-c451c23339a2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/main/grammar/LogicPL.g4" beforeDir="false" afterPath="$PROJECT_DIR$/main/grammar/LogicPL.g4" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,12 +31,12 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "E:/UT/Semester 6/PLC/HW/CA/phase2/LogicPL-Phase2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/UT/Semester 6/PLC/HW/CA/phase2/LogicPL-Phase2&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Documents\University\PLC TA\CA2V4\CA2V4\untitled\src\utilities" />
@@ -75,6 +77,7 @@
       <workItem from="1682182167765" duration="6256000" />
       <workItem from="1682363466741" duration="7924000" />
       <workItem from="1683965960354" duration="176000" />
+      <workItem from="1684066711859" duration="180000" />
     </task>
     <servers />
   </component>

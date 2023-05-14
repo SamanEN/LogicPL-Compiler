@@ -270,8 +270,8 @@ eqExpr returns[Expression eqExprRet]:
     }
     ;
 
-eqExpr2 returns[Expression andExpr2Ret] locals[BinaryExpression temp, BinaryOperator operator]:
-    ( operator = EQ {$operator = BinaryOperator.eq;} | operator = NEQ {$operator = BinaryOperator.neq;} ) left = compExpr right = eqExpr2
+eqExpr2 returns[Expression eqExpr2Ret] locals[BinaryExpression temp, BinaryOperator operator]:
+    ( op = EQ {$operator = BinaryOperator.eq;} | op = NEQ {$operator = BinaryOperator.neq;} ) left = compExpr right = eqExpr2
     {
         if($right.eqExpr2Ret != null)
         {
@@ -304,7 +304,7 @@ compExpr returns[Expression compExprRet]:
     ;
 
 compExpr2 returns[Expression compExpr2Ret] locals[BinaryExpression temp, BinaryOperator operator]:
-    ( operator = LT {$operator = BinaryOperator.lt;} | operator = LTE {$operator = BinaryOperator.lte;} | operator = GT {$operator = BinaryOperator.gt;} | operator = GTE {$operator = BinaryOperator.gte;} ) left = additive right = compExpr2
+    ( op = LT {$operator = BinaryOperator.lt;} | oح = LTE {$operator = BinaryOperator.lte;} | op = GT {$operator = BinaryOperator.gt;} | op = GTE {$operator = BinaryOperator.gte;} ) left = additive right = compExpr2
     {
         if($right.compExpr2Ret != null)
         {
@@ -337,7 +337,7 @@ additive returns[Expression additiveRet]:
     ;
 
 additive2 returns[Expression additive2Ret] locals[BinaryExpression temp, BinaryOperator operator]:
-    ( operator = PLUS {$operator = BinaryOperator.add;} | operator = MINUS {$operator = BinaryOperator.sub;} ) left = multicative right = additive2
+    ( op = PLUS {$operator = BinaryOperator.add;} | op = MINUS {$operator = BinaryOperator.sub;} ) left = multicative right = additive2
     {
         if($right.additive2Ret != null)
         {
@@ -370,7 +370,7 @@ multicative returns[Expression multicativeRet]:
     ;
 
 multicative2 returns[Expression multicative2Ret] locals[BinaryExpression temp, BinaryOperator operator]:
-    ( operator = MULT {$operator = BinaryOperator.mult;} | operator = DIV {$operator = BinaryOperator.div;} | operator = MOD {$operator = BinaryOperator.mod;} ) left = unary right = multicative2
+    ( op = MULT {$operator = BinaryOperator.mult;} | op = DIV {$operator = BinaryOperator.div;} | op = MOD {$operator = BinaryOperator.mod;} ) left = unary right = multicative2
     {
         if($right.multicative2Ret != null)
         {
