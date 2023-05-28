@@ -147,6 +147,11 @@ public class ExpressionTypeChecker extends Visitor<Type> {
     }
 
     @Override
+    public Type visit(QueryExpression queryExpression) {
+        return new BooleanType();
+    }
+
+    @Override
     public Type visit(IntValue value) {
         return new IntType();
     }
