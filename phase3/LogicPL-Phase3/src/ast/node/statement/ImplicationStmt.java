@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class ImplicationStmt extends Statement {
     private Expression condition;
     private ArrayList<Statement> resaultStmts =  new ArrayList<>();
+    private int id;
 
     public ImplicationStmt(Expression condition, ArrayList<Statement> resaultStmts) {
         this.condition = condition;
@@ -33,6 +34,15 @@ public class ImplicationStmt extends Statement {
 
     public void setCondition(Expression condition) {
         this.condition = condition;
+    }
+
+    public Void setId(int id) {
+        this.id = id;
+        return null;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     @Override

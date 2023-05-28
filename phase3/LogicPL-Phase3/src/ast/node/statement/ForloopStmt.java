@@ -10,6 +10,7 @@ public class ForloopStmt extends Statement {
     private Identifier iterator;
     private Identifier arrayName;
     private ArrayList<Statement> bodyStmts = new ArrayList<>();
+    private int id;
 
     public ForloopStmt(Identifier iterator, Identifier arrayName, ArrayList<Statement> bodyStmts) {
         this.iterator = iterator;
@@ -43,6 +44,9 @@ public class ForloopStmt extends Statement {
         this.arrayName = identifier;
     }
 
+    public void setId(int id) { this.id = id; }
+
+    public int getId() { return this.id; }
     @Override
     public String toString() {
         return "ForloopStmt";
