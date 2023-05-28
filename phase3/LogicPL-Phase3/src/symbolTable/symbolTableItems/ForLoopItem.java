@@ -23,6 +23,11 @@ public class ForLoopItem extends SymbolTableItem{
         this.forloopStmt = forloopStmt;
     }
 
+    public Void setForLoopSymbolTable(SymbolTable forLoopSymbolTable) {
+        this.ForLoopSymbolTable = forLoopSymbolTable;
+        return null;
+    }
+
     public SymbolTable getForLoopSymbolTable()
     {
         return this.ForLoopSymbolTable;
@@ -30,6 +35,6 @@ public class ForLoopItem extends SymbolTableItem{
 
     @Override
     public String getKey() {
-        return FunctionItem.STARTKEY + this.name;
+        return ForLoopItem.STARTKEY + this.name;
     }
 }

@@ -95,6 +95,11 @@ public class NameAnalyzer extends Visitor<Void> {
     @Override
     public Void visit(ForloopStmt forloopStmt) {
         var forLoopSymbolTable = new SymbolTable(SymbolTable.top, forloopStmt.toString());
+        ForLoopItem forLoopItem = new ForLoopItem(forloopStmt);
+        forLoopItem.setForLoopSymbolTable(forLoopSymbolTable);
+        try {
+            SymbolTable.top.put(forLoopItem);
+        } catch (ItemAlreadyExistsException e) { }
 
         SymbolTable.push(forLoopSymbolTable);
         for(Statement stmt: forloopStmt.getStatements()) {
