@@ -117,13 +117,15 @@ public class TypeAnalyzer extends Visitor<Void> {
             ImplicationItem implicationItem =
                     (ImplicationItem) SymbolTable.top.get(ImplicationItem.STARTKEY + implicationStmt.toString() + implicationStmt.getId());
             SymbolTable.push(implicationItem.getImplicationSymbolTable());
-        } catch (ItemNotFoundException e) { }
+        } catch (ItemNotFoundException e) {
+        }
 
         Type conditionType = implicationStmt.getCondition().accept(expressionTypeChecker);
         for (Statement stmt : implicationStmt.getStatements())
             stmt.accept(this);
         if (!(conditionType instanceof BooleanType))
-            typeErrors.add(new ConditionTypeNotBool(implicationStmt.getLine()));
+            if (!(conditionType instanceof NoType))
+                typeErrors.add(new ConditionTypeNotBool(implicationStmt.getLine()));
 
         SymbolTable.pop();
         return null;
@@ -132,7 +134,9 @@ public class TypeAnalyzer extends Visitor<Void> {
     @Override
     public Void visit(VarDecStmt varDecStmt) {
         Type tl = varDecStmt.getType();
-        Type tr = varDecStmt.getInitialExpression().accept(expressionTypeChecker);
+        Type tr = new NoType();
+        if (varDecStmt.getInitialExpression() != null)
+            tr = varDecStmt.getInitialExpression().accept(expressionTypeChecker);
         if (tr instanceof NoType)
             return null;
         if (!expressionTypeChecker.sameType(tl, tr))
@@ -140,7 +144,6 @@ public class TypeAnalyzer extends Visitor<Void> {
 
         return null;
     }
-
 
 
 }
