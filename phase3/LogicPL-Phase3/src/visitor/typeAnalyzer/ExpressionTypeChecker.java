@@ -22,6 +22,7 @@ import symbolTable.symbolTableItems.FunctionItem;
 import symbolTable.symbolTableItems.VariableItem;
 import visitor.Visitor;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.function.Function;
 
@@ -114,7 +115,7 @@ public class ExpressionTypeChecker extends Visitor<Type> {
     @Override
     public Type visit(Identifier identifier) {
         try {
-             VariableItem foundItem = (VariableItem) SymbolTable.top.get(identifier.getName());
+             VariableItem foundItem = (VariableItem) SymbolTable.top.get(VariableItem.STARTKEY + identifier.getName());
              return foundItem.getType();
         } catch (ItemNotFoundException e) {
             typeErrors.add(new VarNotDeclared(identifier.getLine(), identifier.getName()));
@@ -125,7 +126,7 @@ public class ExpressionTypeChecker extends Visitor<Type> {
     @Override
     public Type visit(ArrayAccess arrayAccess) {
         try {
-            ArrayItem foundItem = (ArrayItem) SymbolTable.top.get(arrayAccess.getName());
+            ArrayItem foundItem = (ArrayItem) SymbolTable.top.get(ArrayItem.STARTKEY + arrayAccess.getName());
             //TODO can check array index type
             return foundItem.getType();
         } catch (ItemNotFoundException e) {
@@ -137,7 +138,8 @@ public class ExpressionTypeChecker extends Visitor<Type> {
     @Override
     public Type visit(FunctionCall functionCall) {
         try {
-            FunctionItem foundItem = (FunctionItem) SymbolTable.top.get(functionCall.getUFuncName().getName());
+            FunctionItem foundItem =
+                    (FunctionItem) SymbolTable.top.get(FunctionItem.STARTKEY + functionCall.getUFuncName().getName());
             //TODO can check args types
             return foundItem.getHandlerDeclaration().getType();
         } catch (ItemNotFoundException e) {
