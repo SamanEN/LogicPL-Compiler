@@ -127,6 +127,11 @@ public class NameAnalyzer extends Visitor<Void> {
     @Override
     public Void visit(ImplicationStmt implicationStmt) {
         var implicationSymbolTable = new SymbolTable(SymbolTable.top, implicationStmt.toString());
+        ImplicationItem implicationItem = new ImplicationItem(implicationStmt);
+        implicationItem.setImplicationLoopSymbolTable(implicationSymbolTable);
+        try {
+            SymbolTable.top.put(implicationItem);
+        } catch (ItemAlreadyExistsException e) { }
 
         SymbolTable.push(implicationSymbolTable);
         for(Statement stmt: implicationStmt.getStatements()) {
