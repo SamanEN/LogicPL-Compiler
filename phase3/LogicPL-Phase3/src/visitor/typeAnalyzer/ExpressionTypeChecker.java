@@ -100,7 +100,7 @@ public class ExpressionTypeChecker extends Visitor<Type> {
                     return new BooleanType();
             }
             case add, sub, mult, div, mod -> {
-                if (tl instanceof NoType && tr instanceof NoType)
+                if (tl instanceof NoType || tr instanceof NoType)
                     return new NoType();
                 if (tl instanceof IntType && tr instanceof IntType)
                     return new IntType();
@@ -127,7 +127,14 @@ public class ExpressionTypeChecker extends Visitor<Type> {
     public Type visit(ArrayAccess arrayAccess) {
         try {
             ArrayItem foundItem = (ArrayItem) SymbolTable.top.get(ArrayItem.STARTKEY + arrayAccess.getName());
-            //TODO can check array index type
+            Type indexType = arrayAccess.getIndex().accept(this);
+            if (indexType instanceof NoType)
+                return new NoType();
+            if (!(indexType instanceof IntType)) {
+                // This should actually have a different type of error
+                typeErrors.add(new UnsupportedOperandType(arrayAccess.getLine(), arrayAccess.getName()));
+                return new NoType();
+            }
             return foundItem.getType();
         } catch (ItemNotFoundException e) {
             typeErrors.add(new VarNotDeclared(arrayAccess.getLine(), arrayAccess.getName()));
@@ -141,6 +148,8 @@ public class ExpressionTypeChecker extends Visitor<Type> {
             FunctionItem foundItem =
                     (FunctionItem) SymbolTable.top.get(FunctionItem.STARTKEY + functionCall.getUFuncName().getName());
             //TODO can check args types
+            for (Expression argExpr : functionCall.getArgs())
+                argExpr.accept(this);
             return foundItem.getHandlerDeclaration().getType();
         } catch (ItemNotFoundException e) {
             typeErrors.add(new FunctionNotDeclared(functionCall.getLine(), functionCall.getUFuncName().getName()));

@@ -105,6 +105,9 @@ public class TypeAnalyzer extends Visitor<Void> {
     public Void visit(FunctionCall functionCall) {
         try {
             SymbolTable.root.get(FunctionItem.STARTKEY + functionCall.getUFuncName().getName());
+            //TODO can check arg types
+            for (Expression argExpr : functionCall.getArgs())
+                argExpr.accept(expressionTypeChecker);
         } catch (ItemNotFoundException e) {
             typeErrors.add(new FunctionNotDeclared(functionCall.getLine(), functionCall.toString()));
         }
