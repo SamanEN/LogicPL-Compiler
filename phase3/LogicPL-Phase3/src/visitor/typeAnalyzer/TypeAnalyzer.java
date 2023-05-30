@@ -148,5 +148,20 @@ public class TypeAnalyzer extends Visitor<Void> {
         return null;
     }
 
+    @Override
+    public Void visit(ArrayDecStmt arrayDecStmt) {
+        Type tl = arrayDecStmt.getType();
+        for (Expression initialValue : arrayDecStmt.getInitialValues()) {
+            Type tr = initialValue.accept(expressionTypeChecker);
+            if (tr instanceof NoType)
+                break;
+            if (!expressionTypeChecker.sameType(tl, tr)) {
+                typeErrors.add(new UnsupportedOperandType(arrayDecStmt.getLine(), BinaryOperator.assign.name()));
+                break;
+            }
+        }
+        return null;
+    }
+
 
 }
