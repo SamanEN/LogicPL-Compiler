@@ -3,14 +3,18 @@ package visitor.nameAnalyzer;
 import ast.node.Program;
 import ast.node.declaration.*;
 import ast.node.statement.*;
+import ast.type.NoType;
+import ast.type.Type;
 import compileError.*;
 import compileError.Name.*;
 import symbolTable.SymbolTable;
+import symbolTable.itemException.ItemNotFoundException;
 import symbolTable.symbolTableItems.*;
 import symbolTable.itemException.ItemAlreadyExistsException;
 import symbolTable.symbolTableItems.VariableItem;
 import visitor.Visitor;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class NameAnalyzer extends Visitor<Void> {
@@ -28,16 +32,16 @@ public class NameAnalyzer extends Visitor<Void> {
         }
 
         for (var stmt : program.getMain().getMainStatements()) {
-            if(stmt instanceof VarDecStmt) {
+            if (stmt instanceof VarDecStmt) {
                 stmt.accept(this);
             }
-            if(stmt instanceof ArrayDecStmt) {
+            if (stmt instanceof ArrayDecStmt) {
                 stmt.accept(this);
             }
-            if(stmt instanceof ForloopStmt) {
+            if (stmt instanceof ForloopStmt) {
                 stmt.accept(this);
             }
-            if(stmt instanceof ImplicationStmt) {
+            if (stmt instanceof ImplicationStmt) {
                 stmt.accept(this);
             }
         }
@@ -53,7 +57,7 @@ public class NameAnalyzer extends Visitor<Void> {
         functionItem.setFunctionSymbolTable(functionSymbolTable);
 
         boolean done = false;
-        while(!done) {
+        while (!done) {
             try {
                 SymbolTable.top.put(functionItem);
                 done = true;
@@ -71,19 +75,19 @@ public class NameAnalyzer extends Visitor<Void> {
         }
 
         for (var stmt : funcDeclaration.getStatements()) {
-            if(stmt instanceof VarDecStmt) {
+            if (stmt instanceof VarDecStmt) {
                 stmt.accept(this);
             }
 
-            if(stmt instanceof ArrayDecStmt) {
+            if (stmt instanceof ArrayDecStmt) {
                 stmt.accept(this);
             }
 
-            if(stmt instanceof ForloopStmt) {
+            if (stmt instanceof ForloopStmt) {
                 stmt.accept(this);
             }
 
-            if(stmt instanceof ImplicationStmt) {
+            if (stmt instanceof ImplicationStmt) {
                 stmt.accept(this);
             }
         }
@@ -99,23 +103,33 @@ public class NameAnalyzer extends Visitor<Void> {
         forLoopItem.setForLoopSymbolTable(forLoopSymbolTable);
         try {
             SymbolTable.top.put(forLoopItem);
-        } catch (ItemAlreadyExistsException e) { }
+        } catch (ItemAlreadyExistsException e) {
+        }
 
-        SymbolTable.push(forLoopSymbolTable);
-        for(Statement stmt: forloopStmt.getStatements()) {
-            if(stmt instanceof VarDecStmt) {
+        try {
+            ArrayItem arrayItem =
+                    (ArrayItem) SymbolTable.top.get(ArrayItem.STARTKEY + forloopStmt.getArrayName().getName());
+            Type arrayType = arrayItem.getType();
+            SymbolTable.push(forLoopSymbolTable);
+            SymbolTable.top.put(new VariableItem(forloopStmt.getIterator().getName(), arrayType));
+        } catch (ItemNotFoundException e) {
+        } catch (ItemAlreadyExistsException e) {
+        }
+
+        for (Statement stmt : forloopStmt.getStatements()) {
+            if (stmt instanceof VarDecStmt) {
                 stmt.accept(this);
             }
 
-            if(stmt instanceof ArrayDecStmt) {
+            if (stmt instanceof ArrayDecStmt) {
                 stmt.accept(this);
             }
 
-            if(stmt instanceof ForloopStmt) {
+            if (stmt instanceof ForloopStmt) {
                 stmt.accept(this);
             }
 
-            if(stmt instanceof ImplicationStmt) {
+            if (stmt instanceof ImplicationStmt) {
                 stmt.accept(this);
             }
         }
@@ -131,23 +145,24 @@ public class NameAnalyzer extends Visitor<Void> {
         implicationItem.setImplicationLoopSymbolTable(implicationSymbolTable);
         try {
             SymbolTable.top.put(implicationItem);
-        } catch (ItemAlreadyExistsException e) { }
+        } catch (ItemAlreadyExistsException e) {
+        }
 
         SymbolTable.push(implicationSymbolTable);
-        for(Statement stmt: implicationStmt.getStatements()) {
-            if(stmt instanceof VarDecStmt) {
+        for (Statement stmt : implicationStmt.getStatements()) {
+            if (stmt instanceof VarDecStmt) {
                 stmt.accept(this);
             }
 
-            if(stmt instanceof ArrayDecStmt) {
+            if (stmt instanceof ArrayDecStmt) {
                 stmt.accept(this);
             }
 
-            if(stmt instanceof ForloopStmt) {
+            if (stmt instanceof ForloopStmt) {
                 stmt.accept(this);
             }
 
-            if(stmt instanceof ImplicationStmt) {
+            if (stmt instanceof ImplicationStmt) {
                 stmt.accept(this);
             }
         }
