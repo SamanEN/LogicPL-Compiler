@@ -113,6 +113,7 @@ public class NameAnalyzer extends Visitor<Void> {
             SymbolTable.push(forLoopSymbolTable);
             SymbolTable.top.put(new VariableItem(forloopStmt.getIterator().getName(), arrayType));
         } catch (ItemNotFoundException e) {
+            nameErrors.add(new VarOrFunctionNotDeclared(forloopStmt.getLine(), forloopStmt.getArrayName().getName()));
         } catch (ItemAlreadyExistsException e) {
         }
 
