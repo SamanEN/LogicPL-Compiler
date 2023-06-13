@@ -11,7 +11,7 @@ import visitor.typeAnalyzer.TypeAnalyzer;
 
 public class Main {
         public static void main(String[] args) throws java.io.IOException {
-
+            
             CharStream reader = CharStreams.fromFileName(args[0]);
             LogicPLLexer lexer = new LogicPLLexer(reader);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -29,6 +29,10 @@ public class Main {
                     System.out.println(compileError.getMessage());
                 return;
             }
+            
+
+            CodeGenerator codeGenerator = new CodeGenerator();
+            codeGenerator.visit(program);
 
             System.out.println("Compilation was Successful!!");
         }
