@@ -1,7 +1,14 @@
 package visitor.codeGenerator;
 
 import ast.node.Program;
-import byteCode.ByteCode;
+import ast.node.declaration.FuncDeclaration;
+import ast.node.declaration.MainDeclaration;
+import ast.node.expression.BinaryExpression;
+import ast.node.expression.operators.BinaryOperator;
+import ast.node.statement.ArrayDecStmt;
+import ast.node.statement.ReturnStmt;
+import ast.node.statement.VarDecStmt;
+import byteCode.*;
 import visitor.Visitor;
 
 import java.util.ArrayList;
@@ -25,83 +32,74 @@ public class CodeGenerator extends Visitor<ArrayList> {
     public ArrayList<ByteCode> visit(VarDecStmt varDecRet) {
         ArrayList<ByteCode> res = new ArrayList<ByteCode>();
 
-        if (varDecRet.getInitialExpression() == null){
+        if (varDecRet.getInitialExpression() == null) {
             res.add(new Iconst(0));
+        } else {
+            res.addAll(varDecRet.getInitialExpression().accept(this));
         }
-        else{
-            if (varDecRet. <= 3){
-                res.add(new Iconst(varDecRet.)); // TODO
-            }
-            else {
-                res.add(new Bipush(varDecRet.));
-            }
-            
-        }
-            
+
         res.add(new Istore(slotOf(varDecRet.getIdentifier())));
-        return res;                     
+        return res;
     }
 
 
     public ArrayList<ByteCode> visit(ArrayDecStmt arrayDecRet) {
         ArrayList<ByteCode> res = new ArrayList<ByteCode>();
-        
-        if (arrayDecRet.getArrSize() <= 3){
+
+        if (arrayDecRet.getArrSize() <= 3) {
             res.add(new Iconst(arrayDecRet.getArrSize())); // TODO
-        }
-        else {
+        } else {
             res.add(new Bipush(arrayDecRet.getArrSize()));
         }
         res.add(new Newarray());
         res.add(new Astore(slotOf(arrayDecRet.getIdentifier())));
-        
-        if (arrayDecRet.getInitialValues() == null){
+
+        if (arrayDecRet.getInitialValues() == null) {
             return res;
         }
-        
-        for (int i=0; i < arrayDecRet.getArrSize(); i++){
+
+        for (int i = 0; i < arrayDecRet.getArrSize(); i++) {
             res.add(new Aload(slotOf(arrayDecRet.getIdentifier())));
-            
-            if (i <= 3){ // write it better if you can
-                res.add(new Iconst(i));            
-            }
-            else {
+            // TODO use dup instead
+
+            if (i <= 3) {
+                res.add(new Iconst(i));
+            } else {
                 res.add(new Bipush(i));
-            } 
-            
-            res.add() // TODO array values
+            }
+
+            res.addAll(arrayDecRet.getInitialValues().get(i).accept((this)));
+            res.add(new Iastore());
         }
-        res.add(new Iastore());
-        return res; 
+        return res;
     }
 
-    
+
     public ArrayList<ByteCode> visit(ReturnStmt returnRet) {
-        return new ArrayList(new Ireturn());
-    } 
+        ArrayList<ByteCode> res = new ArrayList();
+        res.add(new Ireturn());
+        return res;
+    }
 
 
-    public ArrayList<ByteCode> visit(BinaryExpression e) { // TODO not sure if it is correct
+    public ArrayList<ByteCode> visit(BinaryExpression e) {
         ArrayList<ByteCode> res = new ArrayList<ByteCode>();
-        
-        res.add(new ); // add right value 
 
-        if (e.getBinaryOperator() == MUL){ // replace MUL
+        res.addAll(e.getLeft().accept(this));
+        res.addAll((e.getRight().accept(this)));
+
+        if (e.getBinaryOperator() == BinaryOperator.mult) { // replace MUL
             res.add(new Imul());
-        }
-        else if (e.getBinaryOperator() == PLUS){
+        } else if (e.getBinaryOperator() == BinaryOperator.add) {
             res.add(new Iadd());
-        }
-        else if (e.getBinaryOperator() == SUB){
+        } else if (e.getBinaryOperator() == BinaryOperator.sub) {
             res.add(new Isub());
-        }
-        else if (e.getBinaryOperator() == DIV){
+        } else if (e.getBinaryOperator() == BinaryOperator.div) {
             res.add(new Idiv());
-        }
-        else if (e.getBinaryOperator() == REM){
+        } else if (e.getBinaryOperator() == BinaryOperator.mod) {
             res.add(new Irem());
         }
-        return res; 
-    } 
+        return res;
+    }
 
 }
