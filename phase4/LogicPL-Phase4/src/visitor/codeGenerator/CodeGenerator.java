@@ -3,6 +3,7 @@ package visitor.codeGenerator;
 import LocalVarsArray.LocalVars;
 import LocalVarsArray.LocalVarsStack;
 import ast.node.Program;
+import ast.node.declaration.ArgDeclaration;
 import ast.node.declaration.FuncDeclaration;
 import ast.node.declaration.MainDeclaration;
 import ast.node.expression.*;
@@ -12,15 +13,14 @@ import ast.node.expression.values.BooleanValue;
 import ast.node.expression.values.FloatValue;
 import ast.node.expression.values.IntValue;
 import ast.node.expression.values.Value;
-import ast.node.statement.ArrayDecStmt;
-import ast.node.statement.ReturnStmt;
-import ast.node.statement.Statement;
-import ast.node.statement.VarDecStmt;
+import ast.node.statement.*;
 import ast.type.primitiveType.BooleanType;
+import ast.type.primitiveType.FloatType;
 import ast.type.primitiveType.IntType;
 import byteCode.*;
 import visitor.Visitor;
 
+import java.awt.geom.Arc2D;
 import java.util.ArrayList;
 
 public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
@@ -45,9 +45,13 @@ public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
     public ArrayList<ByteCode> visit(FuncDeclaration functionDeclaration) {
         //TODO put jasmin annotations
         LocalVarsStack.push(new LocalVars());
+        for (ArgDeclaration argDec : functionDeclaration.getArgs())
+            LocalVarsStack.top.pushVar(argDec.getIdentifier().getName());
+
         ArrayList<ByteCode> res = new ArrayList<>();
         for (Statement stmt : functionDeclaration.getStatements())
             res.addAll(stmt.accept(this));
+
         LocalVarsStack.pop();
         return res;
     }
@@ -106,6 +110,16 @@ public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
             res.addAll(returnStmt.getExpression().accept(this));
         //TODO specify return type
         res.add(new Ireturn());
+        return res;
+    }
+
+
+    public ArrayList<ByteCode> visit(AssignStmt assignStmt) {
+        ArrayList<ByteCode> res = new ArrayList<>();
+        if (assignStmt.getLValue() instanceof Identifier)
+            res.addAll(variableLeftValue(assignStmt));
+        else
+            res.addAll(arrayAccessLeftValue(assignStmt));
         return res;
     }
 
@@ -193,6 +207,31 @@ public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
         Invokestatic invokestatic = new Invokestatic(functionCall.getUFuncName().getName());
         //TODO get corresponding function declaration
         res.add(invokestatic);
+        return res;
+    }
+
+    private ArrayList<ByteCode> arrayAccessLeftValue(AssignStmt assignStmt) {
+        ArrayAccess arrayAccess = (ArrayAccess)assignStmt.getLValue();
+        ArrayList<ByteCode> res = new ArrayList<>();
+        //Load array reference
+        res.add(new Aload(LocalVarsStack.top.slotOf(arrayAccess.getName())));
+        //Load index
+        res.addAll(arrayAccess.getIndex().accept(this));
+        //Load value
+        res.addAll((assignStmt.getRValue().accept(this)));
+        //Store
+        res.add((new Iastore()));
+        return res;
+    }
+
+
+    private ArrayList<ByteCode> variableLeftValue(AssignStmt assignStmt) {
+        Identifier identifier = (Identifier)assignStmt.getLValue();
+        ArrayList<ByteCode> res = new ArrayList<>();
+        //TODO check if assignStmt should store a variable as its left value in type checking phase.
+        //TODO add different types
+        res.addAll(assignStmt.getRValue().accept(this));
+        res.add(new Istore(LocalVarsStack.top.slotOf(identifier.getName())));
         return res;
     }
 
