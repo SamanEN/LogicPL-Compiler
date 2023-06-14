@@ -1,5 +1,7 @@
 package visitor.codeGenerator;
 
+import LocalVarsArray.LocalVars;
+import LocalVarsArray.LocalVarsStack;
 import ast.node.Program;
 import ast.node.declaration.FuncDeclaration;
 import ast.node.declaration.MainDeclaration;
@@ -33,7 +35,7 @@ public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
 
     public ArrayList<ByteCode> visit(MainDeclaration mainDeclaration) {
         //TODO put jasmin annotations
-        //TODO must push local vars array stack here
+        LocalVarsStack.push(new LocalVars());
         ArrayList<ByteCode> res = new ArrayList<>();
         for (Statement stmt : mainDeclaration.getMainStatements())
             res.addAll(stmt.accept(this));
@@ -42,14 +44,16 @@ public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
 
     public ArrayList<ByteCode> visit(FuncDeclaration functionDeclaration) {
         //TODO put jasmin annotations
-        //TODO must push local vars array stack here
+        LocalVarsStack.push(new LocalVars());
         ArrayList<ByteCode> res = new ArrayList<>();
         for (Statement stmt : functionDeclaration.getStatements())
             res.addAll(stmt.accept(this));
+        LocalVarsStack.pop();
         return res;
     }
 
     public ArrayList<ByteCode> visit(VarDecStmt varDecStmt) {
+        LocalVarsStack.top.pushVar(varDecStmt.getIdentifier().getName());
         ArrayList<ByteCode> res = new ArrayList<>();
 
         if (varDecStmt.getInitialExpression() == null) {
@@ -58,12 +62,13 @@ public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
             res.addAll(varDecStmt.getInitialExpression().accept(this));
         }
 
-        res.add(new Istore(slotOf(varDecStmt.getIdentifier())));
+        res.add(new Istore(LocalVarsStack.top.slotOf(varDecStmt.getIdentifier().getName())));
         return res;
     }
 
 
     public ArrayList<ByteCode> visit(ArrayDecStmt arrayDecStmt) {
+        LocalVarsStack.top.pushVar(arrayDecStmt.getIdentifier().getName());
         ArrayList<ByteCode> res = new ArrayList<>();
 
         if (arrayDecStmt.getArrSize() <= 3) {
@@ -72,14 +77,14 @@ public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
             res.add(new Bipush(arrayDecStmt.getArrSize()));
         }
         res.add(new Newarray());
-        res.add(new Astore(slotOf(arrayDecStmt.getIdentifier())));
+        res.add(new Astore(LocalVarsStack.top.slotOf(arrayDecStmt.getIdentifier().getName())));
 
         if (arrayDecStmt.getInitialValues() == null) {
             return res;
         }
 
         for (int i = 0; i < arrayDecStmt.getArrSize(); i++) {
-            res.add(new Aload(slotOf(arrayDecStmt.getIdentifier())));
+            res.add(new Aload(LocalVarsStack.top.slotOf(arrayDecStmt.getIdentifier().getName())));
             // TODO use dup instead
 
             if (i <= 3) {
@@ -97,7 +102,7 @@ public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
 
     public ArrayList<ByteCode> visit(ReturnStmt returnStmt) {
         ArrayList<ByteCode> res = new ArrayList<>();
-        if(returnStmt.getExpression() != null)
+        if (returnStmt.getExpression() != null)
             res.addAll(returnStmt.getExpression().accept(this));
         //TODO specify return type
         res.add(new Ireturn());
@@ -146,7 +151,7 @@ public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
 
     public ArrayList<ByteCode> visit(ArrayAccess arrayAccess) {
         ArrayList<ByteCode> res = new ArrayList<>();
-        res.add(new Aload(slotOf(arrayAccess.getName())));
+        res.add(new Aload(LocalVarsStack.top.slotOf(arrayAccess.getName())));
         res.addAll(arrayAccess.getIndex().accept(this));
         //The grammar doesn't support recognizing left vales; Therefore every left value is considered
         //to be either an ArrayAccess or and Identifier. To fix this, these concepts should be seperated
@@ -158,7 +163,7 @@ public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
 
     public ArrayList<ByteCode> visit(Identifier identifier) {
         ArrayList<ByteCode> res = new ArrayList<>();
-        res.add(new Iload(slotOf(identifier.getName())));
+        res.add(new Iload(LocalVarsStack.top.slotOf(identifier.getName())));
         return res;
     }
 
