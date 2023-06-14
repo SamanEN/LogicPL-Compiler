@@ -12,23 +12,38 @@ import ast.node.expression.operators.UnaryOperator;
 import ast.node.expression.values.BooleanValue;
 import ast.node.expression.values.FloatValue;
 import ast.node.expression.values.IntValue;
-import ast.node.expression.values.Value;
 import ast.node.statement.*;
-import ast.type.primitiveType.BooleanType;
-import ast.type.primitiveType.IntType;
-import byteCode.*;
+import ast.type.Type;
+import byteCode.FunctionByteCode;
+import byteCode.ISA.*;
+import byteCode.MainByteCode;
 import visitor.Visitor;
 
 import javax.swing.*;
 import java.util.ArrayList;
 
 public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
+
+    private MainByteCode mainByteCode_;
+    private ArrayList<FunctionByteCode> functionByteCodes_ = new ArrayList<>();
+
     @Override
     public ArrayList<ByteCode> visit(Program program) {
         LocalVarsStack.push(new LocalVars());
         ArrayList<ByteCode> res = new ArrayList<>();
-        for (FuncDeclaration funcDeclaration : program.getFuncs())
-            res.addAll(funcDeclaration.accept(this));
+        for (FuncDeclaration funcDeclaration : program.getFuncs()) {
+            ArrayList<ByteCode> functionBody = funcDeclaration.accept(this);
+            ArrayList<Type> argsTypes = new ArrayList<>();
+            for (ArgDeclaration arg : funcDeclaration.getArgs())
+                argsTypes.add(arg.getType());
+            functionByteCodes_.add(new FunctionByteCode(
+                    functionBody,
+                    funcDeclaration.getName().getName(),
+                    funcDeclaration.getType(),
+                    argsTypes
+            ));
+            res.addAll(functionBody);
+        }
         res.addAll(program.getMain().accept(this));
         return res;
     }
@@ -39,6 +54,7 @@ public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
         ArrayList<ByteCode> res = new ArrayList<>();
         for (Statement stmt : mainDeclaration.getMainStatements())
             res.addAll(stmt.accept(this));
+        mainByteCode_ = new MainByteCode(res);
         return res;
     }
 
@@ -190,6 +206,21 @@ public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
         return res;
     }
 
+    public ArrayList<ByteCode> visit(FloatValue floatValue) {
+        ArrayList<ByteCode> res = new ArrayList<>();
+        res.add(new Ldc(String.valueOf(floatValue.getConstant())));
+        return res;
+    }
+
+    public ArrayList<ByteCode> visit(BooleanValue booleanValue) {
+        ArrayList<ByteCode> res = new ArrayList<>();
+        if (booleanValue.getConstant())
+            res.add(new Iconst(1));
+        else
+            res.add(new Iconst(0));
+        return res;
+    }
+
     public ArrayList<ByteCode> visit(FunctionCall functionCall) {
         ArrayList<ByteCode> res = new ArrayList<>();
         for (Expression e : functionCall.getArgs())
@@ -197,6 +228,14 @@ public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
         Invokestatic invokestatic = new Invokestatic(functionCall.getUFuncName().getName());
         //TODO get corresponding function declaration
         res.add(invokestatic);
+        return res;
+    }
+
+    public String getGeneratedByteCode() {
+        String res = "";
+        for (FunctionByteCode functionByteCode : functionByteCodes_)
+            res += functionByteCode.toString();
+        res += mainByteCode_.toString();
         return res;
     }
 

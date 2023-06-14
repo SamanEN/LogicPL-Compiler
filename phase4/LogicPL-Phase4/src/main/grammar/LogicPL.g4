@@ -40,7 +40,7 @@ statement returns [Statement statementRet]:
     s1 = assignSmt {$statementRet = $s1.assignStmtRet;}| (s2 = predicate SEMICOLON {$statementRet = $s2.predicateRet;})
     | s3 = implication {$statementRet = $s3.implicationRet;} | s4 = returnSmt {$statementRet = $s4.returnRet;}
     | s5 = printSmt {$statementRet = $s5.PrintStmtRet;}| s6 = forLoop {$statementRet = $s6.forRet;}| s7 = localVarDeclaration {$statementRet = $s7.localvarDecRet;}
-    | s8 = expression {$statementRet = $s8.e;}
+    | s8 = expression SEMICOLON {$statementRet = $s8.e;}
     ;
 
 assignSmt returns [AssignStmt assignStmtRet]:
