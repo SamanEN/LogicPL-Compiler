@@ -15,17 +15,17 @@ import ast.node.expression.values.IntValue;
 import ast.node.expression.values.Value;
 import ast.node.statement.*;
 import ast.type.primitiveType.BooleanType;
-import ast.type.primitiveType.FloatType;
 import ast.type.primitiveType.IntType;
 import byteCode.*;
 import visitor.Visitor;
 
-import java.awt.geom.Arc2D;
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
     @Override
     public ArrayList<ByteCode> visit(Program program) {
+        LocalVarsStack.push(new LocalVars());
         ArrayList<ByteCode> res = new ArrayList<>();
         for (FuncDeclaration funcDeclaration : program.getFuncs())
             res.addAll(funcDeclaration.accept(this));
@@ -181,22 +181,12 @@ public class CodeGenerator extends Visitor<ArrayList<ByteCode>> {
         return res;
     }
 
-    public ArrayList<ByteCode> visit(Value value) {
+    public ArrayList<ByteCode> visit(IntValue intValue) {
         ArrayList<ByteCode> res = new ArrayList<>();
-        if (value.getType() instanceof BooleanType) {
-            if (((BooleanValue) value).getConstant())
-                res.add(new Iconst(1));
-            else
-                res.add(new Iconst(0));
-        } else if (value.getType() instanceof IntType) {
-            IntValue intValue = (IntValue) value;
-            if (intValue.getConstant() > 5)
-                res.add(new Bipush(intValue.getConstant()));
-            else
-                res.add(new Iconst(intValue.getConstant()));
-        } else {
-            res.add(new Ldc(String.valueOf(((FloatValue) value).getConstant())));
-        }
+        if (intValue.getConstant() > 5)
+            res.add(new Bipush(intValue.getConstant()));
+        else
+            res.add(new Iconst(intValue.getConstant()));
         return res;
     }
 

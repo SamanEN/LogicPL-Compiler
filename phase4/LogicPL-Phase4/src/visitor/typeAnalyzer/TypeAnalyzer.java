@@ -92,11 +92,15 @@ public class TypeAnalyzer extends Visitor<Void> {
 
     @Override
     public Void visit(AssignStmt assignStmt) {
+        if (!expressionTypeChecker.isLvalue(assignStmt.getLValue())) {
+            typeErrors.add(new LeftSideNotLValue(assignStmt.getLine()));
+            return null;
+        }
+        if (assignStmt.getRValue() == null)
+            return null;
         Type tl = assignStmt.getLValue().accept(expressionTypeChecker);
         Type tr = assignStmt.getRValue().accept(expressionTypeChecker);
-        if (!expressionTypeChecker.isLvalue(assignStmt.getLValue()))
-            typeErrors.add(new LeftSideNotLValue(assignStmt.getLine()));
-        else if (!expressionTypeChecker.sameType(tl, tr))
+        if (!expressionTypeChecker.sameType(tl, tr))
             typeErrors.add(new UnsupportedOperandType(assignStmt.getLine(), BinaryOperator.assign.name()));
         return null;
     }

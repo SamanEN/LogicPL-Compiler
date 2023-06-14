@@ -1,9 +1,12 @@
 import java.io.IOException;
+import java.util.ArrayList;
 
 import ast.node.Program;
+import byteCode.ByteCode;
 import compileError.CompileError;
 import main.grammar.LogicPLLexer;
 import main.grammar.LogicPLParser;
+import visitor.codeGenerator.CodeGenerator;
 import visitor.nameAnalyzer.NameAnalyzer;
 import visitor.astPrinter.ASTPrinter;
 import org.antlr.v4.runtime.*;
@@ -32,7 +35,9 @@ public class Main {
             
 
             CodeGenerator codeGenerator = new CodeGenerator();
-            codeGenerator.visit(program);
+            ArrayList<ByteCode> resultCode = codeGenerator.visit(program);
+            for (ByteCode byteCode : resultCode)
+                System.out.println(byteCode);
 
             System.out.println("Compilation was Successful!!");
         }

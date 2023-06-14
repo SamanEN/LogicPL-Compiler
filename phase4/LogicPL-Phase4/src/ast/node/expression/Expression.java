@@ -1,9 +1,9 @@
 package ast.node.expression;
 
 import ast.type.Type;
-import ast.node.Node;
+import ast.node.statement.Statement;
 
-public abstract class Expression extends Node{
+public abstract class Expression extends Statement {
     private Type type;
 
     public Type getType() {

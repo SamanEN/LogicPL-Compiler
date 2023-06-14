@@ -8,7 +8,7 @@ import ast.type.primitiveType.IntType;
 import java.util.ArrayList;
 
 public class Invokestatic extends ByteCode {
-    private ArrayList<Type> argsType_;
+    private ArrayList<Type> argsType_ = new ArrayList<>();
     private Type returnType_ = null;
     private String name_;
 
