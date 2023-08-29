@@ -1,11 +1,11 @@
 # LogicPL-Pahse1
 During this phase, our team successfully developed the lexical and semantic analyzers for the LogicPL language utilizing the ANTLR framework. These analyzers play a crucial role in processing and understanding LogicPL code. For more details about this phase, please refer to the [LogicPL_Phase1.pdf](../../docs/LogicPL_Phase1.pdf) file located in the "docs" folder.
 
-Furthermore, significant progress was made in enhancing the functionality of our `grammar.g4` file. Specifically, we incorporated actions into the grammar rules to facilitate the printing of parse tree nodes in a pre-order traversal manner. This strategic implementation provides valuable insights into the structure of the LogicPL code during parsing.
+Furthermore, significant progress was made in enhancing the functionality of our `LogicPL.g4` file. Specifically, we incorporated actions into the grammar rules to facilitate the printing of parse tree nodes in a pre-order traversal manner. This strategic implementation provides valuable insights into the structure of the LogicPL code during parsing.
 
 
 ## Test Cases
-Our test cases for this phase are located within the `test_cases`` folder. To validate the functionality of the implemented lexical and semantic analyzers, follow these steps:
+Our test cases for this phase are located within the `test_cases` folder. To validate the functionality of the implemented lexical and semantic analyzers, follow these steps:
 
 1. [Run](#how-to-run) the program with the provided test cases.
 2. Compare the program's output with the corresponding test*-ans.txt file.

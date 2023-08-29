@@ -1,5 +1,5 @@
 # LogicPL-Phase2
-For a detailed overview of this phase's objectives and tasks, kindly consult the [LogicPL_Phase2.pdf](../../docs/PLC-Phase#2-S23.pdf) file available within the designated "docs" folder.
+For a detailed overview of this phase's objectives and tasks, kindly consult the [LogicPL_Phase2.pdf](../../docs/LogicPL_Phase2.pdf) file available within the designated "docs" folder.
 
 - [LogicPL-Phase2](#logicpl-phase2)
   - [AST Tree](#ast-tree)
