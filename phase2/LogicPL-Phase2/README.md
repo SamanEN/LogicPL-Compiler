@@ -1,5 +1,5 @@
 # LogicPL-Phase2
-For a detailed overview of this phase's objectives and tasks, kindly consult the [LogicPL_Phase2.pdf](../docs/PLC-Phase#2-S23.pdf) file available within the designated "docs" folder.
+For a detailed overview of this phase's objectives and tasks, kindly consult the [LogicPL_Phase2.pdf](../../docs/PLC-Phase#2-S23.pdf) file available within the designated "docs" folder.
 
 - [LogicPL-Phase2](#logicpl-phase2)
   - [AST Tree](#ast-tree)
@@ -41,10 +41,10 @@ In this phase, we implemented the name analysis of the input code. In the name a
 ### Test Cases
 Our test cases for this phase are located within the `test_cases` folder. To validate the functionality of the implemented name analyzer, follow these steps:
 
-1. [Run](https://github.com/SamanEN/LogicPL-Compiler/tree/main/phase2/LogicPL-Phase2#how-to-run) the program with the provided test cases.
+1. [Run](#how-to-run) the program with the provided test cases.
 2. Compare the program's output with the corresponding test*-ans.txt file.
 
-Ensuring that the program's output closely matches the content of the associated answer file demonstrates the accurate performance of the name analyzer. This validation process guarantees the correct parsing and analysis of LogicPL language constructs. For detailed test case execution instructions, consult our [documentation](https://github.com/SamanEN/LogicPL-Compiler/tree/main/phase2/LogicPL-Phase2#how-to-run).
+Ensuring that the program's output closely matches the content of the associated answer file demonstrates the accurate performance of the name analyzer. This validation process guarantees the correct parsing and analysis of LogicPL language constructs. For detailed test case execution instructions, consult our [documentation](#how-to-run).
 
 ### How to Run
 To run the program, follow these steps:
