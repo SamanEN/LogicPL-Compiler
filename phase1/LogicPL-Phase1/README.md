@@ -1,4 +1,4 @@
-# LogicPL-Pahse1
+# LogicPL-Phase1
 During this phase, our team successfully developed the lexical and semantic analyzers for the LogicPL language utilizing the ANTLR framework. These analyzers play a crucial role in processing and understanding LogicPL code. For more details about this phase, please refer to the [LogicPL_Phase1.pdf](../../docs/LogicPL_Phase1.pdf) file located in the "docs" folder.
 
 Furthermore, significant progress was made in enhancing the functionality of our `LogicPL.g4` file. Specifically, we incorporated actions into the grammar rules to facilitate the printing of parse tree nodes in a pre-order traversal manner. This strategic implementation provides valuable insights into the structure of the LogicPL code during parsing.
