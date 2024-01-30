@@ -1,5 +1,7 @@
 # Compiler Course Project - LogicPL
 
+Please be aware that the structural organization relies on directories rather than the version control system. This choice was influenced by the requirements of the PLC course, where students were instructed to submit assignments in this particular format, inadvertently resulting in the misapplication of git functionalities.
+
 ## Project Description
 LogicPL is a programming language that includes the following features:
 
